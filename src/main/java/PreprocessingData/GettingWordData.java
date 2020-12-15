@@ -1,4 +1,4 @@
-package tempClassify;
+package PreprocessingData;
 
 import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
 import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;

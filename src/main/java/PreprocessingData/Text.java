@@ -1,4 +1,4 @@
-package tempClassify;
+package PreprocessingData;
 
 public class Text {
     private String _author;

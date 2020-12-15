@@ -1,4 +1,4 @@
-package tempClassify;
+package PreprocessingData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,7 +25,7 @@ import ru.textanalysis.tawt.ms.external.sp.OmoFormExt;
 
 public class PreprocessingOfText {
 
-    static GettingWordData GettingWordData = tempClassify.GettingWordData.getInstance();
+    protected GettingWordData GettingWordData = PreprocessingData.GettingWordData.getInstance();
 
     private static class SingeltonPreprocessingOfText {
         private final static PreprocessingOfText instance = new PreprocessingOfText();
@@ -33,7 +33,7 @@ public class PreprocessingOfText {
 
     public static PreprocessingOfText getInstance() { return SingeltonPreprocessingOfText.instance; }
 
-    private static void createXML(int numberOfFile, String word, String isName, String author, String title,
+    private void createXML(int numberOfFile, String word, String isName, String author, String title,
                                   String typeOfSpeech, String gender, String animate, String frequency,
                                   String mainWord, String dependentVerbs, String dependenceOfVerb, String dependentNoun,
                                   String dependenceOfNoun, String dependentAdjective, String dependenceOfAdjective) {
@@ -87,8 +87,7 @@ public class PreprocessingOfText {
     }
 
 
-    private static void createXML(int numberOfFile, Word word) {
-
+    private void createXML(int numberOfFile, Word word) {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -139,14 +138,13 @@ public class PreprocessingOfText {
         }
     }
 
-
-    private static Node setWordChara(Document doc, String name, String value) {
+    private Node setWordChara(Document doc, String name, String value) {
         Element node = doc.createElement(name);
         node.appendChild(doc.createTextNode(value));
         return node;
     }
 
-    public static Text readXMLText (String path) {
+    public Text readXMLText (String path) {
 //        try {
 //            return new String(Files.readAllBytes(Paths.get(path)));
 //        } catch (IOException e) {
@@ -179,7 +177,7 @@ public class PreprocessingOfText {
         }
     }
 
-    public static Word getWordFromXML (String path) {
+    public Word getWordFromXML (String path) {
         Word wordChara = new Word ();
 
         File xmlFile = new File(path);
@@ -202,7 +200,7 @@ public class PreprocessingOfText {
         }
     }
 
-    private static int processOfWords (String path, int count) {
+    private int processOfWords (String path, int count) {
 
         Text textFromXML = readXMLText(path);
 
@@ -231,7 +229,7 @@ public class PreprocessingOfText {
         return count;
     }
 
-    private static void processOfText (String directory) {
+    public void processOfText (String directory) {
         File dir = new File(directory); //path указывает на директорию
         int count = 0;
         for ( File file : dir.listFiles() ){
@@ -241,7 +239,7 @@ public class PreprocessingOfText {
         }
     }
 
-    private static Text getText(Node node) {
+    private Text getText(Node node) {
         Text text = new Text ();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
@@ -252,7 +250,7 @@ public class PreprocessingOfText {
         return text;
     }
 
-    private static Word getWord(Node node) {
+    private Word getWord(Node node) {
         Word word = new Word ();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
@@ -276,7 +274,7 @@ public class PreprocessingOfText {
         return word;
     }
 
-    private static String getTagValue(String tag, Element element) {
+    private String getTagValue(String tag, Element element) {
 
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
 
@@ -302,7 +300,7 @@ public class PreprocessingOfText {
         return node.getNodeValue();
     }
 
-    public static int getFrequency (String wordToCheck, String text) {
+    public int getFrequency (String wordToCheck, String text) {
         int count = 0;
         List<List<String>> listFromText = GettingWordData.getListFromAllText(text);
         for (List <String> sentence: listFromText) {
@@ -313,7 +311,7 @@ public class PreprocessingOfText {
         return count;
     }
 
-    public static int countMain (String word, String text) {
+    public int countMain (String word, String text) {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
         int countFreq = 0;
 
@@ -326,7 +324,7 @@ public class PreprocessingOfText {
         return countFreq;
     }
 
-    public static List<String> getListOfMainWords (String sentence) {
+    public List<String> getListOfMainWords (String sentence) {
         List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
         List<String> listOfMainWord = new ArrayList<String>();
         for (BearingPhraseExt word: treeSentence) {
@@ -344,7 +342,7 @@ public class PreprocessingOfText {
 
 
     // 17 - сущ. 18, 19 - прил. 20, 21 - гл.
-    public static int countDependsFromWord(String word, String typeOfSpeech, String text) {
+    public int countDependsFromWord(String word, String typeOfSpeech, String text) {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
         int countFreq = 0;
         for (String sentence : listAllSent) {
@@ -386,7 +384,7 @@ public class PreprocessingOfText {
         return countFreq;
     }
 
-    public static int countDependsWord (String word, String typeOfSpeech, String text) {
+    public int countDependsWord (String word, String typeOfSpeech, String text) {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
         int countFreq = 0;
         for (String sentence : listAllSent) {
@@ -428,7 +426,7 @@ public class PreprocessingOfText {
         return countFreq;
     }
 
-    public static void updateFileData (String directory) {
+    public void updateFileData (String directory) {
         File dir = new File(directory); //path указывает на директорию
         List<File> lst = new ArrayList<>();
         for ( File file : dir.listFiles() ){
@@ -442,7 +440,7 @@ public class PreprocessingOfText {
         }
     }
 
-    private static void appendUsingFileWriter(String filePath, String text) {
+    private void appendUsingFileWriter(String filePath, String text) {
         File file = new File(filePath);
         FileWriter fr = null;
         try {
@@ -460,12 +458,5 @@ public class PreprocessingOfText {
         }
     }
 
-
-
-    public static void main(String[] args) {
-
-//        processOfText("Список текстов/");
-        updateFileData("Список слов/");
-    }
 
 }

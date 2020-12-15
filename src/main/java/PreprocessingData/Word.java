@@ -1,4 +1,4 @@
-package tempClassify;
+package PreprocessingData;
 
 public class Word {
     private String _word;

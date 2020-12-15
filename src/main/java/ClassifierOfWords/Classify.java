@@ -1,4 +1,4 @@
-package tempClassify;
+package ClassifierOfWords;
 
 import weka.classifiers.Classifier;
 import weka.core.*;
