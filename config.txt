@@ -1,0 +1,2 @@
+modelLidianka:classifiers/objectClassifierLidianka.model
+modelNelubimaya:classifiers/objectClassifierNelubimaya.model
