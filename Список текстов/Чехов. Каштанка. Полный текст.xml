@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <doc>
-    <author>А.П. Чехов</author>
+    <author>Чехов А.П.</author>
     <title>Каштанка</title>
+    <model>objectClassifierKashtanka</model>
     <text>
     <![CDATA[Каштанка
 

@@ -1,2 +1,3 @@
-modelLidianka:classifiers/objectClassifierLidianka.model
-modelNelubimaya:classifiers/objectClassifierNelubimaya.model
+модель-Лидианка:classifiers/objectClassifierLidianka.model
+модель-Нелюбимая:classifiers/objectClassifierNelubimaya.model
+модель-Каштанка:classifiers/objectClassifierKashtanka.model
