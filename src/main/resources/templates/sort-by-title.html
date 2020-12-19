@@ -26,13 +26,11 @@
         <tr>
             <th> <a href="/texts/title">Название произведения</a></th>
             <th> <a href="/texts/author">Автор</a></th>
-            <th>Название модели</th>
             <th>Посмотреть полную информацию</th>
         </tr>
         <tr th:each="text : ${texts}">
             <td th:text="${text.getTextTitle()}"></td>
             <td th:text="${text.getTextAuthor()}"></td>
-            <td th:text="${text.getModel()}"></td>
             <td><a th:href="'/texts/' + ${text.getId()}" class="btn btn-warning">Посмотреть полный текст</a></td>
         </tr>
     </table>

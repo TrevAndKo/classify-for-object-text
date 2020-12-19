@@ -11,6 +11,7 @@
     <groupId>ru</groupId>
     <artifactId>classificator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>classificator</name>
     <description>Demo project for Spring Boot</description>
 
@@ -207,6 +208,26 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                org.baeldung.executable.ExecutableMavenJar
+                            </mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
 
         </plugins>
     </build>

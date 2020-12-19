@@ -125,7 +125,7 @@ public class GettingWordData {
         else return 0;
     }
 
-    public int getAnimateOfAWord (String word) { // Возвращает true, если слово одушевлённое, false в иных случаях
+    public int getAnimateOfAWord (String word) { // Возвращает 1, если слово одушевлённое, 0 в иных случаях
         if (jMorfSdk.getAllCharacteristicsOfForm(word).get(0).
                 getTheMorfCharacteristics(MorfologyParameters.Animacy.class) == MorfologyParameters.Animacy.ANIMATE) {
             return 1;
