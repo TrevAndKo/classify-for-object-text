@@ -25,49 +25,6 @@ public class TextsController {
         Iterable <TextEntity> texts = textRepository.findAll();
         model.addAttribute("texts", texts);
 
-        ArrayList<TextEntity> rrr= (ArrayList<TextEntity>) textRepository.findAll();
-
-//        Collections.sort(rrr, new Comparator<TextEntity>() {
-//                @Override
-//                public int compare(TextEntity o1, TextEntity o2) {
-//                    return o1.getTextTitle().compareTo(o2.getTextTitle());
-//                }
-//            });
-//
-//            for (TextEntity element : rrr) {
-//                System.out.println(element);
-//            }
-
-
-//        Collections.sort(rrr, new Comparator<TextEntity>() {
-//                @Override
-//                public int compare(TextEntity o1, TextEntity o2) {
-//                    return o1.getTextAuthor().compareTo(o2.getTextAuthor());
-//                }
-//            });
-//
-//            for (TextEntity element : rrr) {
-//                System.out.println(element);
-//            }
-
-
-//        public ArrayList<TextEntity> sortByTitle (List<TextEntity> list) {
-//            ArrayList<TextEntity> result = new ArrayList<>();
-//
-//            Collections.sort(list, new Comparator<TextEntity>() {
-//                @Override
-//                public int compare(TextEntity o1, TextEntity o2) {
-//                    return o1.getTextTitle().compareTo(o2.getTextTitle());
-//                }
-//            });
-//
-//            for (TextEntity element : list) {
-//                System.out.println(element);
-//            }
-//
-//            return result;
-//        }
-
         return "text-main";
     }
 

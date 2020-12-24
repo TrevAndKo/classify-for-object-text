@@ -33,9 +33,7 @@ public class MainController {
     @PostMapping("/")
     public String postText(@RequestParam String inputText, @RequestParam String modelChoose, Model model) {
 
-
         HashMap<String, String> nounAndClass = new HashMap<>();
-
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
             nounAndClass.put(noun, ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
