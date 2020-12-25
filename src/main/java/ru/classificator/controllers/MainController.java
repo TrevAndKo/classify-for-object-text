@@ -11,7 +11,7 @@ import ru.classificator.classificatorweka.Classify;
 import ru.classificator.preprocessingdata.GettingWordData;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
 import ru.classificator.services.TextService;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 @Controller
 @Service
@@ -37,13 +37,19 @@ public class MainController {
     @PostMapping("/")
     public String postText(@RequestParam String inputText, @RequestParam String modelChoose, Model model) {
 
-        HashMap<String, String> nounAndClass = new HashMap<>();
+        if (inputText.isEmpty()) {
+            return "error-input-text";
+        }
+
+        System.out.println("Старт обработки запроса.");
+        TreeMap<String, String> nounAndClass = new TreeMap<>();
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
             nounAndClass.put(noun, ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
                     textService.getModel(modelChoose)));
         }
 
+        System.out.println("Обработка завершена.");
         model.addAttribute("list", nounAndClass);
         return "result";
     }

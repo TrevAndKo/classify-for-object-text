@@ -20,9 +20,10 @@
 </div>
 
 <div class = "container mt-5 mb-5">
-    <h3>Классификация существительных в тексте</h3>
+    <h3>Классификация объектов из текста</h3>
+    <h5>К сожалению, на обработку текстов большого размера может потребоваться время. Просим прощения за ожидание.</h5>
 
-    <form action="/" method="post">
+    <form action="/" method="post" href = "/waiting">
         <textarea name="inputText" placeholder="Введите текст для классификации" class="form-control" rows="15"></textarea><br>
 
         <select name="modelChoose">
@@ -30,7 +31,7 @@
                     th:utext="${modelChoose}"/>
         </select>
 
-        <button type="submit">Классифицировать существительные из текста</button>
+        <button type="submit">Классифицировать объекты из текста</button>
     </form>
 
     <div>
