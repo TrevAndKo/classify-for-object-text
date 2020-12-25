@@ -23,7 +23,7 @@ public class HttpRequestTest {
     @Test
     public void shouldReturnDefaultMessage() throws Exception {
         this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Классификация существительных в тексте")));
+                .andExpect(content().string(containsString("Классификатор объектов из текстов")));
     }
 
     @Test

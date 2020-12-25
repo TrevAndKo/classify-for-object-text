@@ -189,6 +189,7 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -208,7 +209,7 @@
                         <configuration>
                             <classifier>spring-boot</classifier>
                             <mainClass>
-                                org.baeldung.executable.ExecutableMavenJar
+                                ru.classificator.ClassificatorApplication
                             </mainClass>
                         </configuration>
                     </execution>
