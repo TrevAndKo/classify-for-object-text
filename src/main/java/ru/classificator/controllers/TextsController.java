@@ -31,12 +31,16 @@ public class TextsController {
     @GetMapping("/texts/{id}")
     public String textDetails (@PathVariable(value = "id") Integer textId, Model model) {
 
-        Optional <TextEntity> text = textRepository.findById(textId);
-        ArrayList <TextEntity> result = new ArrayList<>();
-        text.ifPresent(result::add);
+        if (textRepository.existsById(textId)) {
+            Optional <TextEntity> text = textRepository.findById(textId);
+            ArrayList <TextEntity> result = new ArrayList<>();
+            text.ifPresent(result::add);
+            model.addAttribute("text", result);
+            return "text-details";
+        }
 
-        model.addAttribute("text", result);
-        return "text-details";
+        else return "error";
+
     }
 
     @GetMapping("/texts/title")

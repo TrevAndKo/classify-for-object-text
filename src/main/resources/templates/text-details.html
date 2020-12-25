@@ -4,6 +4,7 @@
     <title>Список текстов</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
 </head>
 <body>
 
@@ -23,7 +24,7 @@
     <div th:each="el : ${text}" class="alert alert-info mt-2">
         <h3 th:text="${el.getTextTitle()}"/>
         <p th:text="${el.getTextAuthor()}"/>
-        <p th:text="${el.getText()}"/>
+        <div th:text="${el.getText()}"/>
 
     </div>
 

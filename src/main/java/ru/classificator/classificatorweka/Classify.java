@@ -17,13 +17,11 @@ public class Classify {
     private HashMap <String, String> listFilesOfModel = new HashMap<>();
     private HashMap <String, Classifier> listModels = new HashMap<>();
     private String modelsFile = "config.txt";
-    private ArrayList <String> listNameModels = new ArrayList<>();
 
 
     public Classify() {
         try {
             setListModels();
-            setListNameModels();
             for (Map.Entry<String, String> entry : listFilesOfModel.entrySet()) {
                 InputStream classModelStream = new FileInputStream(entry.getValue());
                 listModels.put(entry.getKey(),(Classifier) SerializationHelper.read(classModelStream));
@@ -36,7 +34,6 @@ public class Classify {
     }
 
     public void close() {
-        listNameModels = null;
         listModels = null;
         listFilesOfModel = null;
     }
@@ -97,6 +94,8 @@ public class Classify {
         return classifyObject(values, chooseClass);
     }
 
+
+    // Устанавливает соответствие между названием модели и названием файла модели из файла "config.txt"
     private void setListModels () {
         try {
             File file = new File(modelsFile);
@@ -115,12 +114,4 @@ public class Classify {
             e.printStackTrace();
         }
     }
-
-    private void setListNameModels () {
-        for (Map.Entry<String, String> entry : listFilesOfModel.entrySet()) {
-            listNameModels.add(entry.getKey());
-        }
-    }
-
-    public ArrayList <String> getListNameModels () { return listNameModels; }
 }

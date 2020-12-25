@@ -21,9 +21,5 @@ public class InitiateUtils implements CommandLineRunner {
         textService.processOfText("Список текстов/");
 
         List <TextEntity> all = textService.getAll();
-//
-//        for (TextEntity entity : all) {
-//            System.out.println(entity);
-//        }
     }
 }

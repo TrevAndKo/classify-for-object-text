@@ -1,4 +1,5 @@
 package ru.classificator.controllers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -9,13 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.classificator.classificatorweka.Classify;
 import ru.classificator.preprocessingdata.GettingWordData;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
-
+import ru.classificator.services.TextService;
 import java.util.HashMap;
 
 @Controller
 @Service
 @Profile("client")
 public class MainController {
+
+    @Autowired
+    private TextService textService;
 
     private GettingWordData GettingWordData = ru.classificator.preprocessingdata.GettingWordData.getInstance();
     private PreprocessingOfText PreprocessingOfText
@@ -26,7 +30,7 @@ public class MainController {
     public String greeting(Model model) {
 
         model.addAttribute("title", "Главная страница");
-        model.addAttribute("models", ClassifyWord.getListNameModels());
+        model.addAttribute("models", textService.getTitle());
         return "home";
     }
 
@@ -37,7 +41,7 @@ public class MainController {
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
             nounAndClass.put(noun, ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
-                    modelChoose));
+                    textService.getModel(modelChoose)));
         }
 
         model.addAttribute("list", nounAndClass);

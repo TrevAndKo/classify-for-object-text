@@ -34,8 +34,6 @@ public class TextEntity {
     @Column(name = "model")
     private String model;
 
-//    @Column(name = "model")
-//    private String model;
     public TextEntity(){}
 
     public Integer getId() {
@@ -72,7 +70,6 @@ public class TextEntity {
     public String getModel () { return this.model; }
 
     public void setModel (String model) { this.model = model; }
-
 }
 
 
