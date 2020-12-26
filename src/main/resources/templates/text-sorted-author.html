@@ -10,8 +10,8 @@
 
 <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
-            <a href="/" class="navbar-brand d-flex align-items-center">
-                <strong>Классификатор объектов в тексте</strong>
+        <a href="/" class="navbar-brand d-flex align-items-center">
+            <strong>Классификатор объектов в тексте</strong>
             <nav class="my-2 my-md-0 me-md-3">
                 <a class="p-2 text-white" href="/texts">Просмотр текстов</a>
             </nav>
@@ -21,15 +21,6 @@
 
 <div class = "container mt-5">
     <h3>Список текстов</h3>
-    <form action="/texts/byAuthor" method="post">
-
-        <select name="author">
-            <option th:each="author : ${listAuthor}"
-                    th:utext="${author}"/>
-        </select>
-
-        <button type="submit">Выбрать автора для фильтрации</button>
-    </form>
     <table>
         <tr>
             <th> <a href="/texts">Номер произведения</a></th>
@@ -40,7 +31,7 @@
         <tr th:each="text : ${texts}">
             <td th:text="${text.getId()}"></td>
             <td th:text="${text.getTextTitle()}"></td>
-            <td th:text="${text.getTextAuthor()}"> </td>
+            <td th:text="${text.getTextAuthor()}"></td>
             <td><a th:href="'/texts/' + ${text.getId()}" class="btn btn-warning">Посмотреть полный текст</a></td>
         </tr>
     </table>

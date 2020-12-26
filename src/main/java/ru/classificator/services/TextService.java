@@ -66,14 +66,33 @@ public class TextService {
         return listTitle;
     }
 
+    public List<String> getListAuthor () {
+        ArrayList<String> listAuthor = new ArrayList<>();
+        for (TextEntity text: (ArrayList<TextEntity>) getAll()) {
+            if (!listAuthor.contains(text.getTextAuthor()))
+            listAuthor.add(text.getTextAuthor());
+
+        }
+        return listAuthor;
+    }
+
     public String getModel (String title) {
         ArrayList<TextEntity> listTexts = (ArrayList<TextEntity>) getAll();
         for (TextEntity text: listTexts) {
             if (text.getTextTitle().equals(title))
                 return text.getModel();
-
         }
         return "Lidianka";
+    }
+
+    public List<TextEntity> getAuthor (String author) {
+        ArrayList<TextEntity> listByAuthor = new ArrayList<>();
+        for (TextEntity text: (ArrayList<TextEntity>) getAll()) {
+            if (text.getTextAuthor().equals(author)) {
+                listByAuthor.add(text);
+            }
+        }
+        return listByAuthor;
     }
 
 }

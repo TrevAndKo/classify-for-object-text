@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.classificator.entities.TextEntity;
 import ru.classificator.repositories.TextRepository;
+import ru.classificator.services.TextService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +21,16 @@ public class TextsController {
     @Autowired
     private TextRepository textRepository;
 
+    @Autowired
+    private TextService textService;
+
     @GetMapping("/texts")
     public String textMain (Model model) {
 
         Iterable <TextEntity> texts = textRepository.findAll();
+
         model.addAttribute("texts", texts);
+        model.addAttribute("listAuthor", textService.getListAuthor());
 
         return "text-main";
     }
@@ -77,6 +84,15 @@ public class TextsController {
         model.addAttribute("texts", texts);
 
         return "sort-by-author";
+    }
+
+    @PostMapping("/texts/byAuthor")
+    public String textFilterByAuthor (String author, Model model) {
+
+        ArrayList<TextEntity> sortedList = (ArrayList<TextEntity>) textService.getAuthor(author);
+        model.addAttribute("texts", sortedList);
+
+        return "text-sorted-author";
     }
 
 }
