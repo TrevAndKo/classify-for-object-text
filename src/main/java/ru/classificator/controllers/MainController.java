@@ -42,15 +42,35 @@ public class MainController {
         }
 
         System.out.println("Старт обработки запроса.");
-        TreeMap<String, String> nounAndClass = new TreeMap<>();
+
+        TreeMap<String, String> personClass = new TreeMap<>();
+        TreeMap<String, String> objectClass = new TreeMap<>();
+        TreeMap<String, String> somethingClass = new TreeMap<>();
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
-            nounAndClass.put(noun, ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
-                    textService.getModel(modelChoose)));
+
+            String classOfNoun = ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
+                    textService.getModel(modelChoose));
+
+            switch (classOfNoun) {
+                case "person":
+                    personClass.put(noun, classOfNoun);
+                    break;
+
+                case "object":
+                    objectClass.put(noun, classOfNoun);
+                    break;
+
+                case "something":
+                    somethingClass.put(noun, classOfNoun);
+                    break;
+            }
         }
 
         System.out.println("Обработка завершена.");
-        model.addAttribute("list", nounAndClass);
+        model.addAttribute("listPerson", personClass);
+        model.addAttribute("listObject", objectClass);
+        model.addAttribute("listSomething", somethingClass);
         return "result";
     }
 

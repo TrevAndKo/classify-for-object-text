@@ -22,8 +22,23 @@
 <div class = "container mt-5">
     <h3>Список существительных и их классов</h3>
 
+    <h5>Класс: "Person"</h5>
     <ul>
-        <th:block th:each=" noun : ${list}">
+        <th:block th:each=" noun : ${listPerson}">
+            <li th:utext="${noun.getKey()} + ' - ' + ${noun.getValue()}"></li>
+        </th:block>
+    </ul>
+
+    <h5>Класс: "Object"</h5>
+    <ul>
+        <th:block th:each=" noun : ${listObject}">
+            <li th:utext="${noun.getKey()} + ' - ' + ${noun.getValue()}"></li>
+        </th:block>
+    </ul>
+
+    <h5>Класс: "Something"</h5>
+    <ul>
+        <th:block th:each=" noun : ${listSomething}">
             <li th:utext="${noun.getKey()} + ' - ' + ${noun.getValue()}"></li>
         </th:block>
     </ul>

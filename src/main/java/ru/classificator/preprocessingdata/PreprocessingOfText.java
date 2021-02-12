@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -315,7 +316,6 @@ public class PreprocessingOfText {
         int countFreq = 0;
 
         for (String sentence : listAllSent) {
-
             if (getListOfMainWords(sentence).contains(word)) {
                 countFreq++;
             }
@@ -323,30 +323,32 @@ public class PreprocessingOfText {
         return countFreq;
     }
 
-    public List<String> getListOfMainWords (String sentence) {
+    public HashSet<String> getListOfMainWords (String sentence) {
         List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
-        List<String> listOfMainWord = new ArrayList<String>();
+        HashSet<String> listOfMainWord = new HashSet<>();
         for (BearingPhraseExt word: treeSentence) {
             if (word.getMainOmoForms().isEmpty()) {
                 continue;
             }
-            if (listOfMainWord.indexOf(word) == -1) {
-                listOfMainWord.add(word
-                        .getMainOmoForms().get(0).
-                                getCurrencyOmoForm().getInitialFormString());
-            }
+            listOfMainWord.add(word
+                    .getMainOmoForms().get(0).
+                            getCurrencyOmoForm().getInitialFormString());
+
         }
         return listOfMainWord;
     }
 
 
     // 17 - сущ. 18, 19 - прил. 20, 21 - гл.
+
+
     public int countDependsFromWord(String word, String typeOfSpeech, String text) {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
         int countFreq = 0;
+
         for (String sentence : listAllSent) {
-            List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
             if (sentence.contains(word)) {
+                List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
                 for (BearingPhraseExt wordFromSentence : treeSentence) {
                     for (OmoFormExt w : wordFromSentence.getMainOmoForms()) {
                         if (w.haveDep() && word.equals(w.getCurrencyOmoForm().getInitialFormString())) {
@@ -387,8 +389,8 @@ public class PreprocessingOfText {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
         int countFreq = 0;
         for (String sentence : listAllSent) {
-            List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
             if (sentence.contains(word)) {
+                List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
                 for (BearingPhraseExt wordFromSentence : treeSentence) {
                     for (OmoFormExt w : wordFromSentence.getMainOmoForms()) {
                         if (w.haveMain() && word.equals(w.getCurrencyOmoForm().getInitialFormString())) {

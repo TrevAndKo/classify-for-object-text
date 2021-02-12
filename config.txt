@@ -1,3 +1,6 @@
 Lidianka:classifiers/objectClassifierLidianka.model
 Nelubimaya:classifiers/objectClassifierNelubimaya.model
 Kashtanka:classifiers/objectClassifierKashtanka.model
+JuvayaShlapa:classifiers/objectClassifierJuvayaShlapa.model
+Zaplatka:classifiers/objectClassifierJuvayaShlapa.model
+Popovna:classifiers/objectClassifierJuvayaShlapa.model

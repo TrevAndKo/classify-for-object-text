@@ -26,7 +26,7 @@ public class GettingWordData {
 
     public List<String> getListOfWords (String text) { // Получает необработанный список слов из предложения
         List<String> listWords = Arrays.asList(toLowerSentence(text)
-                .split("[—–,.?!;:\"{}\\[\\]()<>@#№$%*-=*-+]+\\s|[\\s\\n]+"));
+                .split("[—–,.?!;:\"{}\\[\\]()<>@#№$%*\\-=*-+]+\\s|[\\s\\n]+"));
         return listWords;
     }
 
