@@ -31,7 +31,7 @@ public class GettingWordData {
     }
 
     public List<String> getListOfSentences (String text) { // Получает необработанный список предложений из текста
-        List <String> listSentence = Arrays.asList(toLowerSentence(text).split("[.!?]+\\s"));
+        List <String> listSentence = Arrays.asList(toLowerSentence(text).split("[.!?]+[\\s\\n]+"));
         return listSentence;
     }
 
@@ -95,8 +95,9 @@ public class GettingWordData {
         else return false;
     }
 
-    public int checkGenderOfAWord (String word) { // Возвращает 1, если род мужское, возвращает -1,
-        // если род женский, и 0 в иных случаях
+    public int checkGenderOfAWord (String word) // Возвращает 1, если род мужское, возвращает -1,
+    // если род женский, и 0 в иных случаях
+    {
         if (jMorfSdk.getAllCharacteristicsOfForm(word).get(0).
                 getTheMorfCharacteristics(MorfologyParameters.Gender.class) == MorfologyParameters.Gender.MANS) {
             return 1;
@@ -108,8 +109,9 @@ public class GettingWordData {
         else return 0;
     }
 
-    public int checkNameOfAWord (String word) { // Возвращает 1, если слово является именем, фамилией или отчеством,
-        // возвращает -1, если аббревиатура, в иных случаях 0
+    public int checkNameOfAWord (String word) // Возвращает 1, если слово является именем, фамилией или отчеством,
+    // возвращает -1, если аббревиатура, в иных случаях 0
+    {
         if (jMorfSdk.getAllCharacteristicsOfForm(word).get(0).
                 getTheMorfCharacteristics(MorfologyParameters.Name.class) == MorfologyParameters.Name.NAME ||
                 jMorfSdk.getAllCharacteristicsOfForm(word).get(0).
@@ -133,6 +135,8 @@ public class GettingWordData {
         else return 0;
     }
 
-
+    public int getLengthOfWord (String word) {
+        return word.length();
+    }
 
 }

@@ -1,0 +1,59 @@
+@RELATION testZaplatka.txt
+
+@ATTRIBUTE _isname REAL
+@ATTRIBUTE _gender REAL
+@ATTRIBUTE _animate REAL
+@ATTRIBUTE _frequency REAL
+@ATTRIBUTE _mainword REAL
+@ATTRIBUTE _dependentverbs REAL
+@ATTRIBUTE _dependenceofverb REAL
+@ATTRIBUTE _dependentnoun REAL
+@ATTRIBUTE _dependenceofnoun REAL
+@ATTRIBUTE _dependentadjective REAL
+@ATTRIBUTE _dependenceofadjective REAL
+@ATTRIBUTE class {'object','person','something'}
+
+@DATA
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,-1,0,1,0,0,0,0,0,0,0,'something'
+0,0,0,0,0,0,0,0,0,0,0,'something'
+0,0,0,0,1,0,0,0,0,0,0,'something'
+0,-1,0,0,1,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,1,1,0,1,0,0,0,0,0,0,'person'
+0,1,1,1,0,0,0,0,0,0,0,'person'
+0,0,0,5,4,0,0,3,0,0,0,'person'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+1,1,1,0,0,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,1,0,0,1,0,0,1,0,0,0,'something'
+0,-1,0,1,0,0,0,0,0,0,0,'something'
+0,-1,1,2,1,0,0,0,0,0,0,'person'
+0,1,0,0,0,0,0,0,0,0,0,'something'
+0,-1,0,3,0,0,0,0,0,0,0,'object'
+0,1,1,2,1,0,0,1,0,0,0,'person'
+0,0,0,1,1,1,0,1,0,0,0,'object'
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,1,0,2,0,0,0,0,0,0,0,'object'
+0,0,0,1,0,0,0,0,0,0,0,'something'
+0,1,0,0,6,0,0,0,0,0,0,'person'
+0,0,0,1,1,0,0,0,0,0,0,'something'
+0,0,0,9,2,0,0,1,0,0,0,'object'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,-1,0,0,0,0,0,0,0,0,0,'something'
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,0,0,1,0,0,0,0,0,0,0,'something'
+1,1,1,0,2,0,0,2,0,0,0,'object'
+0,0,0,1,0,0,0,0,0,0,0,'something'
+0,1,0,1,0,0,0,0,0,0,0,'something'
+0,1,0,0,0,0,0,0,0,0,0,'something'
+0,0,0,5,4,0,0,3,0,0,0,'person'
+0,-1,0,1,0,0,0,0,0,0,0,'object'
+0,1,0,2,0,0,0,0,0,0,0,'object'
+0,0,0,1,1,0,0,1,0,0,0,'something'
+0,1,0,0,1,0,0,1,0,0,0,'object'
