@@ -5,6 +5,7 @@ import org.w3c.dom.*;
 import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
 import ru.textanalysis.tawt.ms.external.sp.OmoFormExt;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -33,7 +34,7 @@ public class PreprocessingOfText {
     private void createXML(int numberOfFile, String word, String isName, String author, String title,
                                   String typeOfSpeech, String gender, String animate, String frequency,
                                   String mainWord, String dependentVerbs, String dependenceOfVerb, String dependentNoun,
-                                  String length, String dependentAdjective, String dependenceOfAdjective) {
+                           String dependentAdjective, String dependenceOfAdjective, String intem) {
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -53,13 +54,13 @@ public class PreprocessingOfText {
             rootElement.appendChild(setWordChara(doc, "gender", gender));
             rootElement.appendChild(setWordChara(doc, "animate", animate));
             rootElement.appendChild(setWordChara(doc, "frequency", frequency));
-            rootElement.appendChild(setWordChara(doc,"length", length));
             rootElement.appendChild(setWordChara(doc, "mainWord", mainWord));
             rootElement.appendChild(setWordChara(doc,"dependentVerbs", dependentVerbs));
             rootElement.appendChild(setWordChara(doc,"dependenceOfVerb", dependenceOfVerb));
             rootElement.appendChild(setWordChara(doc,"dependentNoun", dependentNoun));
             rootElement.appendChild(setWordChara(doc, "dependentAdjective", dependentAdjective));
             rootElement.appendChild(setWordChara(doc,"dependenceOfAdjective", dependenceOfAdjective));
+            rootElement.appendChild(setWordChara(doc, "InTeM", intem));
 
 
             doc.appendChild(rootElement);
@@ -103,7 +104,6 @@ public class PreprocessingOfText {
             rootElement.appendChild(setWordChara(doc, "gender", Integer.toString(word.getGender())));
             rootElement.appendChild(setWordChara(doc, "animate", Integer.toString(word.getAnimate())));
             rootElement.appendChild(setWordChara(doc, "frequency", Integer.toString(word.getFrequency())));
-            rootElement.appendChild(setWordChara(doc, "length", Integer.toString(word.getLength())));
             rootElement.appendChild(setWordChara(doc, "mainWord", Integer.toString(word.getMainWord())));
             rootElement.appendChild(setWordChara(doc,"dependentVerbs",
                     Integer.toString(word.getDependentVerbs())));
@@ -114,6 +114,8 @@ public class PreprocessingOfText {
                     Integer.toString(word.getDependentAdjective())));
             rootElement.appendChild(setWordChara(doc,"dependenceOfAdjective",
                     Integer.toString(word.getDependenceOfAdjective())));
+            rootElement.appendChild(setWordChara(doc,"InTeM",
+                    Double.toString(word.getIntem())));
 
 
             doc.appendChild(rootElement);
@@ -190,23 +192,22 @@ public class PreprocessingOfText {
 
     public String getVectorOfWord (String word, String text) {
 
-        HashSet <String> listOfAllNoun = GettingWordData.getListAllNoun(GettingWordData.
-                toLowerSentence(text));
+        InTeM InTeM = createIntem(text);
 
         return String.valueOf(GettingWordData.checkNameOfAWord(word)) + "," +
                 String.valueOf(GettingWordData.checkGenderOfAWord(word)) + "," +
                 String.valueOf(GettingWordData.getAnimateOfAWord(word)) + "," +
                 String.valueOf(getFrequency(word, text))+ "," +
-                String.valueOf(GettingWordData.getLengthOfWord(word)) + "," +
                 String.valueOf(countMain(word, text)) + "," +
                 String.valueOf(countDependsFromWord(word, "VERB", text)) + "," +
                 String.valueOf(countDependsWord(word, "VERB", text)) + "," +
                 String.valueOf(countDependsFromWord(word, "ADJ", text)) + "," +
                 String.valueOf(countDependsWord(word, "ADJ", text)) + "," +
-                String.valueOf(countDependsFromWord(word, "NOUN", text));
+                String.valueOf(countDependsFromWord(word, "NOUN", text)) + "," +
+                String.valueOf(InTeM.getIntem(word));
     }
 
-    private int processOfWords (String path, int count) {
+    private int processOfWords (String path, int count, InTeM InTeM) {
 
         Text textFromXML = readXMLText(path);
 
@@ -223,13 +224,13 @@ public class PreprocessingOfText {
             word.setGender(GettingWordData.checkGenderOfAWord(noun));
             word.setAnimate(GettingWordData.getAnimateOfAWord(noun));
             word.setFrequency(getFrequency(noun, textFromXML.getText()));
-            word.setLength(GettingWordData.getLengthOfWord(noun));
             word.setMainWord(countMain(noun, textFromXML.getText()));
             word.setDependentVerbs(countDependsFromWord(noun, "VERB", textFromXML.getText()));
             word.setDependenceOfVerb(countDependsWord(noun, "VERB", textFromXML.getText()));
             word.setDependentAdjective(countDependsFromWord(noun, "ADJ", textFromXML.getText()));
             word.setDependenceOfAdjective(countDependsWord(noun, "ADJ", textFromXML.getText()));
             word.setDependentNoun(countDependsFromWord(noun, "NOUN", textFromXML.getText()));
+            word.setIntem(InTeM.getIntem(noun));
             createXML(count++, word);
         }
         return count;
@@ -237,10 +238,14 @@ public class PreprocessingOfText {
 
     public void processOfText (String directory) {
         File dir = new File(directory); //path указывает на директорию
-        int count = 0;
+        int count = 76;
         for ( File file : dir.listFiles() ){
-            if (file.isFile())
-                count = processOfWords(file.getPath(), count);
+            if (file.isFile()) {
+
+                InTeM InTeM = createIntem(readXMLText(file.getPath()).getText());
+
+                count = processOfWords(file.getPath(), count, InTeM);
+            }
             System.out.println("Работа с файлом " + file.getPath() + " завершена.");
         }
     }
@@ -269,13 +274,13 @@ public class PreprocessingOfText {
             word.setGender(Integer.parseInt(getTagValue("gender", element)));
             word.setAnimate(Integer.parseInt(getTagValue("animate", element)));
             word.setFrequency(Integer.parseInt(getTagValue("frequency", element)));
-            word.setLength(Integer.parseInt(getTagValue("length", element)));
             word.setMainWord(Integer.parseInt(getTagValue("mainWord", element)));
             word.setDependentVerbs(Integer.parseInt(getTagValue("dependentVerbs", element)));
             word.setDependenceOfVerb(Integer.parseInt(getTagValue("dependenceOfVerb", element)));
             word.setDependentNoun(Integer.parseInt(getTagValue("dependentNoun", element)));
             word.setDependentAdjective(Integer.parseInt(getTagValue("dependentAdjective", element)));
             word.setDependenceOfAdjective(Integer.parseInt(getTagValue("dependenceOfAdjective", element)));
+            word.setIntem(Double.parseDouble(getTagValue("InTeM", element)));
         }
 
         return word;
@@ -351,37 +356,37 @@ public class PreprocessingOfText {
                 List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
                 for (BearingPhraseExt wordFromSentence : treeSentence) {
                     for (OmoFormExt w : wordFromSentence.getMainOmoForms()) {
-                        if (w.haveDep() && word.equals(w.getCurrencyOmoForm().getInitialFormString())) {
+                        if (w.getCurrencyOmoForm().getInitialFormString().equals(word)) {
+                            for (OmoFormExt t: w.getDependentWords()) {
+                                switch (typeOfSpeech) {
+                                    case ("VERB"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(t.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("20")) ||
+                                                GettingWordData.jMorfSdk.getTypeOfSpeeches(t.getCurrencyOmoForm().
+                                                        getInitialFormString()).contains(Byte.parseByte("21"))
+                                        ) {
+                                            countFreq++;
+                                        }
+                                        break;
 
-                            switch (typeOfSpeech) {
-                                case ("VERB"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                            Byte.parseByte("20")) ||
-                                            GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                                    Byte.parseByte("21"))) {
-                                        countFreq++;
-                                    }
-                                    break;
+                                    case ("ADJ"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(t.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("18")) ||
+                                                GettingWordData.jMorfSdk.getTypeOfSpeeches(t.getCurrencyOmoForm().
+                                                        getInitialFormString()).contains(Byte.parseByte("19"))) {
+                                            countFreq++;
+                                        }
+                                        break;
 
-                                case ("ADJ"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                        Byte.parseByte("18")) ||
-                                        GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                                Byte.parseByte("19"))) {
-                                    countFreq++;
-                                    }
-                                    break;
-
-                                case ("NOUN"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                            Byte.parseByte("17"))) {
-                                        countFreq++;
-                                    }
-                                    break;
+                                    case ("NOUN"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(t.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("17"))) {
+                                            countFreq++;
+                                        }
+                                        break;
+                                }
                             }
-
                         }
-
                     }
                 }
             }
@@ -397,37 +402,37 @@ public class PreprocessingOfText {
                 List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
                 for (BearingPhraseExt wordFromSentence : treeSentence) {
                     for (OmoFormExt w : wordFromSentence.getMainOmoForms()) {
-                        if (w.haveMain() && word.equals(w.getCurrencyOmoForm().getInitialFormString())) {
+                        for (OmoFormExt t: w.getDependentWords()) {
+                            if (t.getCurrencyOmoForm().getInitialFormString().equals(word)) {
+                                switch (typeOfSpeech) {
+                                    case ("VERB"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(w.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("20")) ||
+                                                GettingWordData.jMorfSdk.getTypeOfSpeeches(w.getCurrencyOmoForm().
+                                                        getInitialFormString()).contains(Byte.parseByte("21"))
+                                        ) {
+                                            countFreq++;
+                                        }
+                                        break;
 
-                            switch (typeOfSpeech) {
-                                case ("VERB"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                            Byte.parseByte("20")) ||
-                                            GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                                    Byte.parseByte("21"))) {
-                                        countFreq++;
-                                    }
-                                    break;
+                                    case ("ADJ"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(w.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("18")) ||
+                                                GettingWordData.jMorfSdk.getTypeOfSpeeches(w.getCurrencyOmoForm().
+                                                        getInitialFormString()).contains(Byte.parseByte("19"))) {
+                                            countFreq++;
+                                        }
+                                        break;
 
-                                case ("ADJ"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                            Byte.parseByte("18")) ||
-                                            GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                                    Byte.parseByte("19"))) {
-                                        countFreq++;
-                                    }
-                                    break;
-
-                                case ("NOUN"):
-                                    if (GettingWordData.jMorfSdk.getTypeOfSpeeches(word).contains(
-                                            Byte.parseByte("17"))) {
-                                        countFreq++;
-                                    }
-                                    break;
+                                    case ("NOUN"):
+                                        if (GettingWordData.jMorfSdk.getTypeOfSpeeches(w.getCurrencyOmoForm().
+                                                getInitialFormString()).contains(Byte.parseByte("17"))) {
+                                            countFreq++;
+                                        }
+                                        break;
+                                }
                             }
-
                         }
-
                     }
                 }
             }
@@ -466,5 +471,40 @@ public class PreprocessingOfText {
             }
         }
     }
+
+    public InTeM createIntem (String text) {
+        InTeM InTeM = new InTeM();
+
+        List<String> listAllWords = GettingWordData.getListOfWords(text);
+        HashSet<String> listAllNoun = GettingWordData.getListAllNoun(text);
+
+        HashMap <String, Integer> tableOfNoun = new HashMap<>();
+        for (String noun : listAllNoun) {
+            tableOfNoun.put(noun, 0);
+        }
+
+        int id = 0;
+        for (String wordFromText : listAllWords) {
+            String word = GettingWordData.getInitFormOfAWord(wordFromText);
+
+            if (tableOfNoun.containsKey(GettingWordData.getInitFormOfAWord(word))) {
+                int count = tableOfNoun.get(GettingWordData.getInitFormOfAWord(word)) + 1;
+                tableOfNoun.remove(GettingWordData.getInitFormOfAWord(word));
+                tableOfNoun.put(word, count);
+            }
+
+        }
+
+        for (HashMap.Entry<String, Integer> word : tableOfNoun.entrySet()) {
+            InTeM.addWord(new WordWithStats(word.getKey(), 1, word.getValue(), getFrequency(word.getKey(), text),
+                    id++));
+        }
+        InTeM.calculateFWeight();
+        InTeM.calculateQWeight();
+        InTeM.calculateIntem();
+
+        return InTeM;
+    }
+
 
 }

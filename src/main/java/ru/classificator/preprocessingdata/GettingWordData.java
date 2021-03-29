@@ -135,8 +135,4 @@ public class GettingWordData {
         else return 0;
     }
 
-    public int getLengthOfWord (String word) {
-        return word.length();
-    }
-
 }

@@ -9,13 +9,13 @@ public class Word {
     private int _gender;
     private int _animate;
     private int _frequency;
-    private int _length;
     private int _mainWord;
     private int _dependentVerbs;
     private int _dependenceOfVerb;
     private int _dependentNoun;
     private int _dependentAdjective;
     private int _dependenceOfAdjective;
+    private double _intem;
 
     Word () {
         this._word = "Не задано";
@@ -26,19 +26,18 @@ public class Word {
         this._gender = 0;
         this._animate = 0;
         this._frequency = 0;
-        this._length = 0;
         this._mainWord = 0;
         this._dependentVerbs = 0;
         this._dependenceOfVerb = 0;
         this._dependentNoun = 0;
         this._dependentAdjective = 0;
         this._dependenceOfAdjective = 0;
+        this._intem = 0.0;
     }
 
     Word (String word, int isName, String author, String title, int gender, int animate,
           int frequency, int mainWord, int dependentVerbs, int dependenceOfVerb,
-          int dependentNoun, int length, int dependentAdjective,
-          int dependenceOfAdjective) {
+          int dependentNoun, int dependentAdjective, int dependenceOfAdjective, double intem) {
         this._word = word;
         this._isName = isName;
         this._author = author;
@@ -47,13 +46,13 @@ public class Word {
         this._gender = gender;
         this._animate = animate;
         this._frequency = frequency;
-        this._length = length;
         this._mainWord = mainWord;
         this._dependentVerbs = dependentVerbs;
         this._dependenceOfVerb = dependenceOfVerb;
         this._dependentNoun = dependentNoun;
         this._dependentAdjective = dependentAdjective;
         this._dependenceOfAdjective = dependenceOfAdjective;
+        this._intem = intem;
     }
 
     Word (Word word) {
@@ -64,13 +63,13 @@ public class Word {
         this._gender = word._gender;
         this._animate = word._animate;
         this._frequency = word._frequency;
-        this._length = word._length;
         this._mainWord = word._mainWord;
         this._dependentVerbs = word._dependentVerbs;
         this._dependenceOfVerb = word._dependenceOfVerb;
         this._dependentNoun = word._dependentNoun;
         this._dependentAdjective = word._dependentAdjective;
         this._dependenceOfAdjective = word._dependenceOfAdjective;
+        this._intem = word._intem;
     }
 
     public String getWord() { return _word; }
@@ -91,8 +90,6 @@ public class Word {
 
     public int getFrequency () { return _frequency; }
 
-    public int getLength () { return _length; }
-
     public int getMainWord () { return _mainWord; }
 
     public int getDependentVerbs () { return _dependentVerbs; }
@@ -104,6 +101,8 @@ public class Word {
     public int getDependentAdjective () { return _dependentAdjective; }
 
     public int getDependenceOfAdjective () { return _dependenceOfAdjective; }
+
+    public double getIntem () { return _intem; }
 
     public void setWord (String word) { this._word = word; }
 
@@ -121,8 +120,6 @@ public class Word {
 
     public void setFrequency (int frequency) { this._frequency = frequency; }
 
-    public void setLength (int length) { this._length = length; }
-
     public void setMainWord (int mainWord) { this._mainWord = mainWord; }
 
     public void setDependentVerbs (int dependentVerbs) { this._dependentVerbs = dependentVerbs; }
@@ -136,11 +133,13 @@ public class Word {
     public void setDependenceOfAdjective (int dependenceOfAdjective) { this._dependenceOfAdjective =
             dependenceOfAdjective; }
 
+    public void setIntem (double intem) { this._intem = intem; }
+
     public String toStringVector () {
         return (this.getIsName() + "," + this.getGender() + "," + this.getAnimate() + "," +
-                this.getFrequency() + "," + this._length + "," + this.getMainWord() + "," + this.getDependentVerbs() +
+                this.getFrequency() + "," + this.getMainWord() + "," + this.getDependentVerbs() +
                 "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun() + "," + this.getDependentAdjective()
-                + "," + this.getDependenceOfAdjective() + "," + this.getWord() + "\n");
+                + "," + this.getDependenceOfAdjective() + "," + this.getIntem() + "," + this.getWord() + "\n");
     }
 
 }
