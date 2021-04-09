@@ -4,8 +4,6 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.*;
 import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
 import ru.textanalysis.tawt.ms.external.sp.OmoFormExt;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -13,9 +11,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,9 +28,9 @@ public class PreprocessingOfText {
     public static PreprocessingOfText getInstance() { return SingeltonPreprocessingOfText.instance; }
 
     private void createXML(int numberOfFile, String word, String isName, String author, String title,
-                                  String typeOfSpeech, String gender, String animate, String frequency,
-                                  String mainWord, String dependentVerbs, String dependenceOfVerb, String dependentNoun,
-                           String dependentAdjective, String dependenceOfAdjective, String intem) {
+                           String typeOfSpeech, String gender, String animate, String frequency,
+                           String mainWord, String dependentVerbs, String dependenceOfVerb, String dependentNoun,
+                           String dependentAdjective, String dependenceOfNoun, String intem) {
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -58,8 +54,8 @@ public class PreprocessingOfText {
             rootElement.appendChild(setWordChara(doc,"dependentVerbs", dependentVerbs));
             rootElement.appendChild(setWordChara(doc,"dependenceOfVerb", dependenceOfVerb));
             rootElement.appendChild(setWordChara(doc,"dependentNoun", dependentNoun));
+            rootElement.appendChild(setWordChara(doc,"dependenceOfNoun", dependenceOfNoun));
             rootElement.appendChild(setWordChara(doc, "dependentAdjective", dependentAdjective));
-            rootElement.appendChild(setWordChara(doc,"dependenceOfAdjective", dependenceOfAdjective));
             rootElement.appendChild(setWordChara(doc, "InTeM", intem));
 
 
@@ -110,12 +106,11 @@ public class PreprocessingOfText {
             rootElement.appendChild(setWordChara(doc,"dependenceOfVerb",
                     Integer.toString(word.getDependenceOfVerb())));
             rootElement.appendChild(setWordChara(doc,"dependentNoun", Integer.toString(word.getDependentNoun())));
+            rootElement.appendChild(setWordChara(doc,"dependenceOfNoun",
+                    Integer.toString(word.getDependenceOfNoun())));
             rootElement.appendChild(setWordChara(doc, "dependentAdjective",
                     Integer.toString(word.getDependentAdjective())));
-            rootElement.appendChild(setWordChara(doc,"dependenceOfAdjective",
-                    Integer.toString(word.getDependenceOfAdjective())));
-            rootElement.appendChild(setWordChara(doc,"InTeM",
-                    Double.toString(word.getIntem())));
+            rootElement.appendChild(setWordChara(doc,"InTeM", Double.toString(word.getIntem())));
 
 
             doc.appendChild(rootElement);
@@ -202,7 +197,7 @@ public class PreprocessingOfText {
                 String.valueOf(countDependsFromWord(word, "VERB", text)) + "," +
                 String.valueOf(countDependsWord(word, "VERB", text)) + "," +
                 String.valueOf(countDependsFromWord(word, "ADJ", text)) + "," +
-                String.valueOf(countDependsWord(word, "ADJ", text)) + "," +
+                String.valueOf(countDependsWord(word, "NOUN", text)) + "," +
                 String.valueOf(countDependsFromWord(word, "NOUN", text)) + "," +
                 String.valueOf(InTeM.getIntem(word));
     }
@@ -228,7 +223,7 @@ public class PreprocessingOfText {
             word.setDependentVerbs(countDependsFromWord(noun, "VERB", textFromXML.getText()));
             word.setDependenceOfVerb(countDependsWord(noun, "VERB", textFromXML.getText()));
             word.setDependentAdjective(countDependsFromWord(noun, "ADJ", textFromXML.getText()));
-            word.setDependenceOfAdjective(countDependsWord(noun, "ADJ", textFromXML.getText()));
+            word.setDependenceOfNoun(countDependsWord(noun, "ADJ", textFromXML.getText()));
             word.setDependentNoun(countDependsFromWord(noun, "NOUN", textFromXML.getText()));
             word.setIntem(InTeM.getIntem(noun));
             createXML(count++, word);
@@ -279,7 +274,7 @@ public class PreprocessingOfText {
             word.setDependenceOfVerb(Integer.parseInt(getTagValue("dependenceOfVerb", element)));
             word.setDependentNoun(Integer.parseInt(getTagValue("dependentNoun", element)));
             word.setDependentAdjective(Integer.parseInt(getTagValue("dependentAdjective", element)));
-            word.setDependenceOfAdjective(Integer.parseInt(getTagValue("dependenceOfAdjective", element)));
+            word.setDependenceOfNoun(Integer.parseInt(getTagValue("dependenceOfNoun", element)));
             word.setIntem(Double.parseDouble(getTagValue("InTeM", element)));
         }
 
@@ -506,5 +501,60 @@ public class PreprocessingOfText {
         return InTeM;
     }
 
+    public void preparingTrainingSample (String path, String nameFile, int size) {
+
+        List <String> trainPerson = new ArrayList<>();
+        List <String> trainObject = new ArrayList<>();
+        List <String> trainSomething = new ArrayList<>();
+
+        try {
+            File file = new File(path);
+            FileReader fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
+            String line = "Старт считывания";
+
+            while (line != null) {
+
+                if ((line.indexOf("person") != -1) && (trainPerson.size() <= size)) {
+                    trainPerson.add(line);
+                }
+
+                if ((line.indexOf("object") != -1) && (trainObject.size() <= size)) {
+                    trainObject.add(line);
+                }
+
+                if ((line.indexOf("something") != -1) && (trainSomething.size() <= size)) {
+                    trainSomething.add(line);
+                }
+
+                if ((trainPerson.size() == size) && (trainObject.size() == size) && (trainSomething.size() == size)) {
+                    break;
+                }
+
+                line = reader.readLine();
+            }
+
+            PrintWriter writer = new PrintWriter(nameFile, "UTF-8");
+            for (String word : trainPerson) {
+                writer.println(word);
+            }
+
+            for (String word : trainObject) {
+                writer.println(word);
+            }
+
+            for (String word : trainSomething) {
+                writer.println(word);
+            }
+
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

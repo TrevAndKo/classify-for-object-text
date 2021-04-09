@@ -60,9 +60,9 @@ public class GettingWordData {
     public boolean checkNoun(String word){ // Проверяет, является ли слово существительным
         List<Byte> temp = jMorfSdk.getTypeOfSpeeches(word);
         if ((jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("17")))&&
-                        (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("12")))&&
-                                (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("13")))&&
-                                        (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("15"))))
+                (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("12")))&&
+                (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("13")))&&
+                (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("15"))))
         {
             return true;
         }
