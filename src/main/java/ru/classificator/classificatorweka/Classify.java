@@ -89,7 +89,6 @@ public class Classify {
         values.put("dependentNoun", vector[7]);
         values.put("dependenceOfNoun", vector[8]);
         values.put("dependentAdjective", vector[9]);
-        values.put("dependenceOfAdjective", vector[10]);
 
         return classifyObject(values, chooseClass);
     }

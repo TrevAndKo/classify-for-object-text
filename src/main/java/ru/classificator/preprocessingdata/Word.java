@@ -13,8 +13,8 @@ public class Word {
     private int _dependentVerbs;
     private int _dependenceOfVerb;
     private int _dependentNoun;
+    private int _dependentceOfNoun;
     private int _dependentAdjective;
-    private int _dependenceOfAdjective;
     private double _intem;
 
     Word () {
@@ -30,8 +30,8 @@ public class Word {
         this._dependentVerbs = 0;
         this._dependenceOfVerb = 0;
         this._dependentNoun = 0;
+        this._dependentceOfNoun = 0;
         this._dependentAdjective = 0;
-        this._dependenceOfAdjective = 0;
         this._intem = 0.0;
     }
 
@@ -51,7 +51,7 @@ public class Word {
         this._dependenceOfVerb = dependenceOfVerb;
         this._dependentNoun = dependentNoun;
         this._dependentAdjective = dependentAdjective;
-        this._dependenceOfAdjective = dependenceOfAdjective;
+        this._dependentceOfNoun = dependenceOfAdjective;
         this._intem = intem;
     }
 
@@ -68,7 +68,7 @@ public class Word {
         this._dependenceOfVerb = word._dependenceOfVerb;
         this._dependentNoun = word._dependentNoun;
         this._dependentAdjective = word._dependentAdjective;
-        this._dependenceOfAdjective = word._dependenceOfAdjective;
+        this._dependentceOfNoun = word._dependentceOfNoun;
         this._intem = word._intem;
     }
 
@@ -100,7 +100,7 @@ public class Word {
 
     public int getDependentAdjective () { return _dependentAdjective; }
 
-    public int getDependenceOfAdjective () { return _dependenceOfAdjective; }
+    public int getDependenceOfNoun () { return _dependentceOfNoun; }
 
     public double getIntem () { return _intem; }
 
@@ -130,7 +130,7 @@ public class Word {
 
     public void setDependentAdjective (int dependentAdjective) { this._dependentAdjective = dependentAdjective; }
 
-    public void setDependenceOfAdjective (int dependenceOfAdjective) { this._dependenceOfAdjective =
+    public void setDependenceOfNoun (int dependenceOfAdjective) { this._dependentceOfNoun =
             dependenceOfAdjective; }
 
     public void setIntem (double intem) { this._intem = intem; }
@@ -138,8 +138,8 @@ public class Word {
     public String toStringVector () {
         return (this.getIsName() + "," + this.getGender() + "," + this.getAnimate() + "," +
                 this.getFrequency() + "," + this.getMainWord() + "," + this.getDependentVerbs() +
-                "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun() + "," + this.getDependentAdjective()
-                + "," + this.getDependenceOfAdjective() + "," + this.getIntem() + "," + this.getWord() + "\n");
+                "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun()+ "," + this.getDependenceOfNoun()
+                + "," + this.getDependentAdjective() + "," + this.getIntem() + "," + this.getWord() + "\n");
     }
 
 }

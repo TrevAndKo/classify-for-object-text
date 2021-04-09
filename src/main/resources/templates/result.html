@@ -23,18 +23,18 @@
     <h3>Список существительных и их классов</h3>
 
     <h5>Класс: "Person"</h5>
-    <ul>
+    <ol>
         <th:block th:each=" noun : ${listPerson}">
             <li th:utext="${noun.getKey()} + ' - ' + ${noun.getValue()}"></li>
         </th:block>
-    </ul>
+    </ol>
 
     <h5>Класс: "Object"</h5>
-    <ul>
+    <ol>
         <th:block th:each=" noun : ${listObject}">
             <li th:utext="${noun.getKey()} + ' - ' + ${noun.getValue()}"></li>
         </th:block>
-    </ul>
+    </ol>
 
     <h5>Класс: "Something"</h5>
     <ul>
