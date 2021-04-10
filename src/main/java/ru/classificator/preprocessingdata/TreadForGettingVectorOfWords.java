@@ -43,7 +43,8 @@ public class TreadForGettingVectorOfWords extends Thread {
     public void run() {
         for (String noun: this._listNouns) {
 
-            String classOfNoun = ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, this._inputText),
+            String classOfNoun = ClassifyWord.classifyObject(PreprocessingOfText.
+                            getVectorOfWord(noun, this._inputText, this._InTeM.getIntem(noun)),
                     this._modelChoose);
 
             switch (classOfNoun) {

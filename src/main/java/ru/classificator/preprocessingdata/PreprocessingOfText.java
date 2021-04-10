@@ -185,9 +185,7 @@ public class PreprocessingOfText {
         }
     }
 
-    public String getVectorOfWord (String word, String text) {
-
-        InTeM InTeM = createIntem(text);
+    public String getVectorOfWord (String word, String text, double InTeM) {
 
         return String.valueOf(GettingWordData.checkNameOfAWord(word)) + "," +
                 String.valueOf(GettingWordData.checkGenderOfAWord(word)) + "," +
@@ -199,7 +197,7 @@ public class PreprocessingOfText {
                 String.valueOf(countDependsFromWord(word, "ADJ", text)) + "," +
                 String.valueOf(countDependsWord(word, "NOUN", text)) + "," +
                 String.valueOf(countDependsFromWord(word, "NOUN", text)) + "," +
-                String.valueOf(InTeM.getIntem(word));
+                String.valueOf(InTeM);
     }
 
     private int processOfWords (String path, int count, InTeM InTeM) {
