@@ -7,13 +7,4 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class ClassificatorApplication {
 
 
-    public static class LauncherServer {
-        public static void main(String[] args) {
-            new SpringApplicationBuilder()
-                    .sources(ClassificatorApplication.class)
-                    .profiles("server")
-                    .run(args);
-        }
-    }
-
 }

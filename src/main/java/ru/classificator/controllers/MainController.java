@@ -1,4 +1,5 @@
 package ru.classificator.controllers;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.classificator.classificatorweka.Classify;
 import ru.classificator.preprocessingdata.GettingWordData;
+import ru.classificator.preprocessingdata.InTeM;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
 import ru.classificator.services.TextService;
 import java.util.TreeMap;
@@ -43,27 +45,32 @@ public class MainController {
 
         System.out.println("Старт обработки запроса.");
 
-        TreeMap<String, String> personClass = new TreeMap<>();
-        TreeMap<String, String> objectClass = new TreeMap<>();
-        TreeMap<String, String> somethingClass = new TreeMap<>();
+        TreeMap<String, Pair<String, Double>> personClass = new TreeMap<>();
+        TreeMap<String, Pair<String, Double>> objectClass = new TreeMap<>();
+        TreeMap<String, Pair<String, Double>> somethingClass = new TreeMap<>();
+
+        InTeM InTeM = PreprocessingOfText.createIntem(inputText);
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
 
-            String classOfNoun = ClassifyWord.classifyObject(PreprocessingOfText.getVectorOfWord(noun, inputText),
-                    textService.getModel(modelChoose));
+            String vector = PreprocessingOfText.getVectorOfWord(noun, inputText, InTeM.getIntem(noun));
+            String[] temp = vector.split(",");
+            String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
 
-            switch (classOfNoun) {
-                case "person":
-                    personClass.put(noun, classOfNoun);
-                    break;
+            if (Double.parseDouble(temp[10]) <= 0) {
+                switch (classOfNoun) {
+                    case "person":
+                        personClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        break;
 
-                case "object":
-                    objectClass.put(noun, classOfNoun);
-                    break;
+                    case "object":
+                        objectClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        break;
 
-                case "something":
-                    somethingClass.put(noun, classOfNoun);
-                    break;
+                    case "something":
+                        somethingClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        break;
+                }
             }
         }
 
