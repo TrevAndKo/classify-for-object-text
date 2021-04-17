@@ -13,6 +13,8 @@ import ru.classificator.preprocessingdata.GettingWordData;
 import ru.classificator.preprocessingdata.InTeM;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
 import ru.classificator.services.TextService;
+
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 @Controller
@@ -45,40 +47,72 @@ public class MainController {
 
         System.out.println("Старт обработки запроса.");
 
-        TreeMap<String, Pair<String, Double>> personClass = new TreeMap<>();
-        TreeMap<String, Pair<String, Double>> objectClass = new TreeMap<>();
-        TreeMap<String, Pair<String, Double>> somethingClass = new TreeMap<>();
+        TreeMap<String, Pair<String, String>> personClass = new TreeMap<>();
+        TreeMap<String, Pair<String, String>> objectClass = new TreeMap<>();
+        TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
 
         InTeM InTeM = PreprocessingOfText.createIntem(inputText);
 
         for (String noun: GettingWordData.getListAllNoun(inputText)) {
 
             String vector = PreprocessingOfText.getVectorOfWord(noun, inputText, InTeM.getIntem(noun));
-            String[] temp = vector.split(",");
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
 
-            if (Double.parseDouble(temp[10]) <= 0) {
                 switch (classOfNoun) {
                     case "person":
-                        personClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        personClass.put(noun, new Pair (classOfNoun, vector));
                         break;
 
                     case "object":
-                        objectClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        objectClass.put(noun, new Pair (classOfNoun, vector));
                         break;
 
                     case "something":
-                        somethingClass.put(noun, new Pair (classOfNoun, temp[10]));
+                        somethingClass.put(noun, new Pair (classOfNoun, vector));
                         break;
                 }
-            }
+
         }
 
         System.out.println("Обработка завершена.");
-        model.addAttribute("listPerson", personClass);
-        model.addAttribute("listObject", objectClass);
+        model.addAttribute("listPersonMale", filterGender(1, personClass));
+        model.addAttribute("listPersonFemale", filterGender(-1, personClass));
+        model.addAttribute("listPersonNon", filterGender(0, personClass));
+        model.addAttribute("listPersonAnimate", filterAnimate(1, personClass));
+        model.addAttribute("listPersonNoAnimate", filterAnimate(0, personClass));
+        model.addAttribute("listObjectMale", filterGender(1, objectClass));
+        model.addAttribute("listObjectFemale", filterGender(-1, objectClass));
+        model.addAttribute("listObjectNon", filterGender(0, objectClass));
+        model.addAttribute("listObjectAnimate", filterAnimate(1, objectClass));
+        model.addAttribute("listObjectNoAnimate", filterAnimate(0, objectClass));
         model.addAttribute("listSomething", somethingClass);
+
+//        model.addAttribute("listPerson", personClass);
+//        model.addAttribute("listObject", objectClass);
+//        model.addAttribute("listSomething", somethingClass);
         return "result";
+    }
+
+    public ArrayList<String> filterGender(int gender, TreeMap<String, Pair<String, String>> list) {
+        ArrayList<String> sortedList = new ArrayList<>();
+        list.forEach((word, chara) -> {
+            String[] vector = chara.getValue().split(",");
+            if (Integer.parseInt(vector[5]) == gender) {
+                sortedList.add(word);
+            }
+        });
+        return sortedList;
+    }
+
+    public ArrayList<String> filterAnimate(int animate, TreeMap<String, Pair<String, String>> list) {
+        ArrayList<String> sortedList = new ArrayList<>();
+        list.forEach((word, chara) -> {
+            String[] vector = chara.getValue().split(",");
+            if (Integer.parseInt(vector[6]) == animate) {
+                sortedList.add(word);
+            }
+        });
+        return sortedList;
     }
 
 }
