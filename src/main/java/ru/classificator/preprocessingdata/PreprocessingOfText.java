@@ -190,7 +190,7 @@ public class PreprocessingOfText {
         return String.valueOf(GettingWordData.checkNameOfAWord(word)) + "," +
                 String.valueOf(GettingWordData.checkGenderOfAWord(word)) + "," +
                 String.valueOf(GettingWordData.getAnimateOfAWord(word)) + "," +
-                String.valueOf(getFrequency(word, text))+ "," +
+//                String.valueOf(getFrequency(word, text))+ "," +
                 String.valueOf(countMain(word, text)) + "," +
                 String.valueOf(countDependsFromWord(word, "VERB", text)) + "," +
                 String.valueOf(countDependsWord(word, "VERB", text)) + "," +
@@ -298,16 +298,16 @@ public class PreprocessingOfText {
         return node.getNodeValue();
     }
 
-    public int getFrequency (String wordToCheck, String text) {
-        int count = 1;
-        List<List<String>> listFromText = GettingWordData.getListFromAllText(text);
-        for (List <String> sentence: listFromText) {
-            for (String word: sentence) {
-                if (word.toLowerCase().equals(wordToCheck.toLowerCase())) { count++; }
-            }
-        }
-        return count;
-    }
+//    public int getFrequency (String wordToCheck, String text) {
+//        int count = 1;
+//        List<List<String>> listFromText = GettingWordData.getListFromAllText(text);
+//        for (List <String> sentence: listFromText) {
+//            for (String word: sentence) {
+//                if (word.toLowerCase().equals(wordToCheck.toLowerCase())) { count++; }
+//            }
+//        }
+//        return count;
+//    }
 
     public int countMain (String word, String text) {
         List<String> listAllSent = GettingWordData.getListOfSentences(text);
@@ -349,6 +349,10 @@ public class PreprocessingOfText {
                 List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
                 for (BearingPhraseExt wordFromSentence : treeSentence) {
                     for (OmoFormExt w : wordFromSentence.getMainOmoForms()) {
+
+
+
+
                         if (w.getCurrencyOmoForm().getInitialFormString().equals(word)) {
                             for (OmoFormExt t: w.getDependentWords()) {
                                 switch (typeOfSpeech) {

@@ -43,12 +43,16 @@ public class GettingWordData {
         return listofWords;
     }
 
-    public HashSet<String> getListAllNoun (String text) {
-        HashSet <String> listAllNoun = new HashSet <String>();
+    public HashSet<Word> getListAllNoun (String text) {
+        HashSet<Word> listAllNoun = new HashSet<Word>();
         for (String sentence: getListOfSentences(text)) {
             for (String word: getListOfWords(sentence)) {
                 if (checkNoun(word)) {
-                    listAllNoun.add(getInitFormOfAWord(word));
+                    Word currentWord = new Word(getInitFormOfAWord(word));
+                    if (listAllNoun.contains(word)) {
+                        currentWord.setFrequency(currentWord.getFrequency() + 1);
+                    }
+                    listAllNoun.add(currentWord);
                 }
             }
         }

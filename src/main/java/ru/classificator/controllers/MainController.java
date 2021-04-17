@@ -12,6 +12,7 @@ import ru.classificator.classificatorweka.Classify;
 import ru.classificator.preprocessingdata.GettingWordData;
 import ru.classificator.preprocessingdata.InTeM;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
+import ru.classificator.preprocessingdata.Word;
 import ru.classificator.services.TextService;
 
 import java.util.ArrayList;
@@ -51,11 +52,11 @@ public class MainController {
         TreeMap<String, Pair<String, String>> objectClass = new TreeMap<>();
         TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
 
-        InTeM InTeM = PreprocessingOfText.createIntem(inputText);
+        InTeM inTeM = PreprocessingOfText.createIntem(inputText);
 
-        for (String noun: GettingWordData.getListAllNoun(inputText)) {
+        for (Word noun: GettingWordData.getListAllNoun(inputText)) {
 
-            String vector = PreprocessingOfText.getVectorOfWord(noun, inputText, InTeM.getIntem(noun));
+            String vector = PreprocessingOfText.getVectorOfWord(noun, inputText, inTeM.getIntem(noun));
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
 
                 switch (classOfNoun) {

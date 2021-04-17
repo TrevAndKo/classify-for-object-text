@@ -1,6 +1,9 @@
 package ru.classificator.preprocessingdata;
 
+import java.util.Objects;
+
 public class Word {
+
     private String _word;
     private int _isName;
     private String _author;
@@ -33,6 +36,11 @@ public class Word {
         this._dependentceOfNoun = 0;
         this._dependentAdjective = 0;
         this._intem = 0.0;
+    }
+
+    Word (String word) {
+        super();
+        this._word = word;
     }
 
     Word (String word, int isName, String author, String title, int gender, int animate,
@@ -140,6 +148,23 @@ public class Word {
                 this.getFrequency() + "," + this.getMainWord() + "," + this.getDependentVerbs() +
                 "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun()+ "," + this.getDependenceOfNoun()
                 + "," + this.getDependentAdjective() + "," + this.getIntem() + "," + this.getWord() + "\n");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Word word = (Word) o;
+        return _word.equals(word._word);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_word);
     }
 
 }
