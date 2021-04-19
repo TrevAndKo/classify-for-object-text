@@ -54,22 +54,22 @@ public class MainController {
 
         InTeM inTeM = PreprocessingOfText.createIntem(inputText);
 
-        for (Word noun: GettingWordData.getListAllNoun(inputText)) {
+        for (Word noun: PreprocessingOfText.processOfWords(inputText, inTeM)) {
+            String vector = noun.toStringVector();
 
-            String vector = PreprocessingOfText.getVectorOfWord(noun, inputText, inTeM.getIntem(noun));
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
 
                 switch (classOfNoun) {
                     case "person":
-                        personClass.put(noun, new Pair (classOfNoun, vector));
+                        personClass.put(noun.getWord(), new Pair (classOfNoun, vector));
                         break;
 
                     case "object":
-                        objectClass.put(noun, new Pair (classOfNoun, vector));
+                        objectClass.put(noun.getWord(), new Pair (classOfNoun, vector));
                         break;
 
                     case "something":
-                        somethingClass.put(noun, new Pair (classOfNoun, vector));
+                        somethingClass.put(noun.getWord(), new Pair (classOfNoun, vector));
                         break;
                 }
 

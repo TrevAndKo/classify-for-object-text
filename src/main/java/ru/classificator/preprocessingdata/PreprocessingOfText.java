@@ -186,9 +186,10 @@ public class PreprocessingOfText {
     }
 
 
-    private int processOfWords (String path, int count, InTeM InTeM) {
+    public HashSet <Word> processOfWords (String text, InTeM InTeM) {
 
-        List <String> listOfSentence = GettingWordData.getListOfSentences(readXMLText(path).getText());
+        List <String> listOfSentence = GettingWordData.getListOfSentences(text);
+//        List <String> listOfSentence = GettingWordData.getListOfSentences(readXMLText(path).getText());
         HashSet <Word> listOfNouns = new HashSet<>();
 
         for (String sentence: listOfSentence) {
@@ -220,7 +221,7 @@ public class PreprocessingOfText {
                 }
             }
         }
-        return count; // счётчик файлов
+        return listOfNouns;
     }
 
     public void updateWordInList (Word noun, HashSet <Word> listOfNouns) {
@@ -233,13 +234,14 @@ public class PreprocessingOfText {
 
     public void processOfText (String directory) {
         File dir = new File(directory); //path указывает на директорию
-        int count = 76;
+        int count = 0;
         for ( File file : dir.listFiles() ){
             if (file.isFile()) {
 
                 InTeM InTeM = createIntem(readXMLText(file.getPath()).getText());
-
-                count = processOfWords(file.getPath(), count, InTeM);
+                for (Word word: processOfWords(readXMLText(file.getPath()).getText(), InTeM)) {
+                    createXML(count++, word);
+                }
             }
             System.out.println("Работа с файлом " + file.getPath() + " завершена.");
         }

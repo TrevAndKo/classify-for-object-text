@@ -147,7 +147,7 @@ public class Word {
         return (this.getIsName() + "," + this.getGender() + "," + this.getAnimate() + "," +
                 this.getFrequency() + "," + this.getMainWord() + "," + this.getDependentVerbs() +
                 "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun()+ "," + this.getDependenceOfNoun()
-                + "," + this.getDependentAdjective() + "," + this.getIntem() + "," + this.getWord() + "\n");
+                + "," + this.getDependentAdjective() /*+ "," + this.getIntem()*/ + "," + this.getWord() + "\n");
     }
 
     @Override
