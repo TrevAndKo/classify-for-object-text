@@ -169,7 +169,6 @@ public class Word {
 
     public void updateWord (Word word) {
 
-        this._frequency = this._frequency + word.getFrequency();
         this._mainWord = this._mainWord + word.getMainWord();
         this._dependentVerbs = this._dependentVerbs + word.getDependentVerbs();
         this._dependenceOfVerb = this._dependenceOfVerb + word.getDependenceOfVerb();

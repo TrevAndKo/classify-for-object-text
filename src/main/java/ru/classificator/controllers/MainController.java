@@ -16,6 +16,7 @@ import ru.classificator.preprocessingdata.Word;
 import ru.classificator.services.TextService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 @Controller
@@ -53,8 +54,9 @@ public class MainController {
         TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
 
         InTeM inTeM = PreprocessingOfText.createIntem(inputText);
+        HashSet <Word> ttt =  PreprocessingOfText.processOfWords(inputText, inTeM);
 
-        for (Word noun: PreprocessingOfText.processOfWords(inputText, inTeM)) {
+        for (Word noun: ttt) {
             String vector = noun.toStringVector();
 
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
@@ -98,7 +100,7 @@ public class MainController {
         ArrayList<String> sortedList = new ArrayList<>();
         list.forEach((word, chara) -> {
             String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[5]) == gender) {
+            if (Integer.parseInt(vector[1]) == gender) {
                 sortedList.add(word);
             }
         });
@@ -109,7 +111,7 @@ public class MainController {
         ArrayList<String> sortedList = new ArrayList<>();
         list.forEach((word, chara) -> {
             String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[6]) == animate) {
+            if (Integer.parseInt(vector[2]) == animate) {
                 sortedList.add(word);
             }
         });
