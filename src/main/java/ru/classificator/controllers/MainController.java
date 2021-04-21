@@ -78,40 +78,25 @@ public class MainController {
         }
 
         System.out.println("Обработка завершена.");
-        model.addAttribute("listPersonMale", filterGender(1, personClass));
-        model.addAttribute("listPersonFemale", filterGender(-1, personClass));
-        model.addAttribute("listPersonNon", filterGender(0, personClass));
-        model.addAttribute("listPersonAnimate", filterAnimate(1, personClass));
-        model.addAttribute("listPersonNoAnimate", filterAnimate(0, personClass));
-        model.addAttribute("listObjectMale", filterGender(1, objectClass));
-        model.addAttribute("listObjectFemale", filterGender(-1, objectClass));
-        model.addAttribute("listObjectNon", filterGender(0, objectClass));
-        model.addAttribute("listObjectAnimate", filterAnimate(1, objectClass));
-        model.addAttribute("listObjectNoAnimate", filterAnimate(0, objectClass));
+        model.addAttribute("listPersonMale", filterNoun(1, 1, personClass));
+        model.addAttribute("listPersonFemale", filterNoun(-1, 1, personClass));
+        model.addAttribute("listPersonNon", filterNoun(0, 1, objectClass));
+
+        model.addAttribute("listObjectMale", filterNoun(1, 0, objectClass));
+        model.addAttribute("listObjectFemale", filterNoun(-1, 0, objectClass));
+        model.addAttribute("listObjectNon", filterNoun(0, 0, objectClass));
+
         model.addAttribute("listSomething", somethingClass);
 
-//        model.addAttribute("listPerson", personClass);
-//        model.addAttribute("listObject", objectClass);
-//        model.addAttribute("listSomething", somethingClass);
         return "result";
     }
 
-    public ArrayList<String> filterGender(int gender, TreeMap<String, Pair<String, String>> list) {
-        ArrayList<String> sortedList = new ArrayList<>();
-        list.forEach((word, chara) -> {
-            String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[1]) == gender) {
-                sortedList.add(word);
-            }
-        });
-        return sortedList;
-    }
 
-    public ArrayList<String> filterAnimate(int animate, TreeMap<String, Pair<String, String>> list) {
+    public ArrayList<String> filterNoun(int gender, int animate, TreeMap<String, Pair<String, String>> list) {
         ArrayList<String> sortedList = new ArrayList<>();
         list.forEach((word, chara) -> {
             String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[2]) == animate) {
+            if (Integer.parseInt(vector[1]) == gender && Integer.parseInt(vector[1]) == gender) {
                 sortedList.add(word);
             }
         });

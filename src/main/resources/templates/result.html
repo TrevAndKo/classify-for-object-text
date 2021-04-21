@@ -38,22 +38,10 @@
             <li th:utext="${noun}"></li>
         </th:block>
     </ul>
+
     <ul>
         <h7>Средний</h7>
         <th:block th:each=" noun : ${listPersonNon}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <h6>Сортировка по одушевлённости</h6>
-    <ul>
-        <h7>Одушевлённый</h7>
-        <th:block th:each=" noun : ${listPersonAnimate}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <ul>
-        <h7>Неодушевлённый</h7>
-        <th:block th:each=" noun : ${listPersonNoAnimate}">
             <li th:utext="${noun}"></li>
         </th:block>
     </ul>
@@ -73,24 +61,12 @@
         </th:block>
     </ul>
     <ul>
-        <h7>Неодушевлённый</h7>
+        <h7>Средний</h7>
         <th:block th:each=" noun : ${listObjectNon}">
             <li th:utext="${noun}"></li>
         </th:block>
     </ul>
-    <h6>Сортировка по одушевлённости</h6>
-    <ul>
-        <h7>Одушевлённый</h7>
-        <th:block th:each=" noun : ${listObjectAnimate}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <ul>
-        <h7>Неодушевлённый</h7>
-        <th:block th:each=" noun : ${listObjectNoAnimate}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
+
 
     <h5>Класс: "Something"</h5>
     <ul>
