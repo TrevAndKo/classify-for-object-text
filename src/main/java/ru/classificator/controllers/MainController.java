@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.classificator.classificatorweka.Classify;
 import ru.classificator.preprocessingdata.GettingWordData;
-import ru.classificator.preprocessingdata.InTeM;
 import ru.classificator.preprocessingdata.PreprocessingOfText;
 import ru.classificator.preprocessingdata.Word;
 import ru.classificator.services.TextService;
@@ -53,8 +52,7 @@ public class MainController {
         TreeMap<String, Pair<String, String>> objectClass = new TreeMap<>();
         TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
 
-        InTeM inTeM = PreprocessingOfText.createIntem(inputText);
-        HashSet <Word> ttt =  PreprocessingOfText.processOfWords(inputText, inTeM);
+        HashSet <Word> ttt =  PreprocessingOfText.processOfWords(inputText);
 
         for (Word noun: ttt) {
             String vector = noun.toStringVector();
@@ -80,7 +78,7 @@ public class MainController {
         System.out.println("Обработка завершена.");
         model.addAttribute("listPersonMale", filterNoun(1, 1, personClass));
         model.addAttribute("listPersonFemale", filterNoun(-1, 1, personClass));
-        model.addAttribute("listPersonNon", filterNoun(0, 1, objectClass));
+        model.addAttribute("listPersonNon", filterNoun(0, 1, personClass));
 
         model.addAttribute("listObjectMale", filterNoun(1, 0, objectClass));
         model.addAttribute("listObjectFemale", filterNoun(-1, 0, objectClass));

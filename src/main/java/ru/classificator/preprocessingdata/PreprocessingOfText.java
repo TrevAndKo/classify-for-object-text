@@ -13,7 +13,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -56,8 +55,6 @@ public class PreprocessingOfText {
             rootElement.appendChild(setWordChara(doc,"dependentNoun", dependentNoun));
             rootElement.appendChild(setWordChara(doc,"dependenceOfNoun", dependenceOfNoun));
             rootElement.appendChild(setWordChara(doc, "dependentAdjective", dependentAdjective));
-            rootElement.appendChild(setWordChara(doc, "InTeM", intem));
-
 
             doc.appendChild(rootElement);
 
@@ -110,8 +107,6 @@ public class PreprocessingOfText {
                     Integer.toString(word.getDependenceOfNoun())));
             rootElement.appendChild(setWordChara(doc, "dependentAdjective",
                     Integer.toString(word.getDependentAdjective())));
-            rootElement.appendChild(setWordChara(doc,"InTeM", Double.toString(word.getIntem())));
-
 
             doc.appendChild(rootElement);
 
@@ -186,32 +181,37 @@ public class PreprocessingOfText {
     }
 
 
-    public void fff (String checkWord, List <OmoFormExt> listDataAboutPoint, HashSet <Word> listOfNouns) {
+    public void recursionProcessing (String checkWord, List <OmoFormExt> listDataAboutPoint, HashSet <Word> listOfNouns) {
         for (OmoFormExt word: listDataAboutPoint) {
+
             if (GettingWordData.getInitFormOfAWord(checkWord).equals(word.getCurrencyOmoForm().getInitialFormString()) && (
                     GettingWordData.checkNoun(checkWord))) {
                     Word temp = new Word(GettingWordData.getInitFormOfAWord(checkWord));
                     countDependsFromWord(word, temp);
                     countDependsWord(word, temp);
-                    listOfNouns.add(temp);
+                    if (listOfNouns.contains(temp)) {
+                        updateWordInList(temp, listOfNouns);
+                    } else {
+                        listOfNouns.add(temp);
+                    }
 
             }
             else {
-                fff(checkWord, word.getDependentWords(), listOfNouns);
+                recursionProcessing(checkWord, word.getDependentWords(), listOfNouns);
             }
         }
     }
 
 
-    public HashSet <Word> processOfWords (String text, InTeM InTeM) {
+    public HashSet <Word> processOfWords (String text) {
 
         List <String> listOfSentence = GettingWordData.getListOfSentences(text);
-//        List <String> listOfSentence = GettingWordData.getListOfSentences(readXMLText(path).getText());
+
         HashSet <Word> listOfNouns = new HashSet<>();
 
         for (String sentence: listOfSentence) {
+            System.out.println(sentence);
             List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
-//проверить слово проверяемое и соответствие
             for (String checkWord: GettingWordData.getListOfWords(sentence)) {
                 for (OmoFormExt word: treeSentence.get(0).getMainOmoForms()) {
                     if (GettingWordData.getInitFormOfAWord(checkWord).equals(word.getCurrencyOmoForm().getInitialFormString()) &&
@@ -221,100 +221,26 @@ public class PreprocessingOfText {
                         temp.setMainWord(temp.getMainWord() + 1);
                         countDependsFromWord(word, temp);
                         countDependsWord(word, temp);
-                        listOfNouns.add(temp);
+                        if (listOfNouns.contains(temp)) {
+                            updateWordInList(temp, listOfNouns);
+                        } else {
+                            listOfNouns.add(temp);
+                        }
 
                         break;
                     }
                     else {
-                        fff(checkWord, word.getDependentWords(), listOfNouns);
+                        recursionProcessing(checkWord, word.getDependentWords(), listOfNouns);
                     }
                 }
             }
 
-
-//                for (OmoFormExt word: treeSentence.get(0).getMainOmoForms()) {
-//                    if (GettingWordData.checkNoun(word.getCurrencyOmoForm().getInitialFormString())) {
-//                        Word temp = new Word(word.getCurrencyOmoForm().getInitialFormString());
-//
-//                        if (word.getCurrencyOmoForm().getInitialFormString().equals(temp.getWord())) {
-//                                temp.setMainWord(temp.getMainWord() + 1);
-//                            }
-//                        for (OmoFormExt InWord: word.getDependentWords()) {
-//                            countDependsFromWord(word, temp);
-//                        }
-//
-//                        //проверки существительного
-//                    } else {
-//                        // проверки зависимостей
-//                    }
-//                }
-
-//
-//
-//
-//                if (GettingWordData.checkNoun(wwword)) {
-//                    Word noun = new Word(GettingWordData.getInitFormOfAWord(wwword));
-//                    for (OmoFormExt word: treeSentence.get(0).getMainOmoForms()) {
-//                        if (GettingWordData.checkNoun(word.getCurrencyOmoForm().getInitialFormString())) {
-//                            if (word.getCurrencyOmoForm().getInitialFormString().equals(noun.getWord())) {
-//                                noun.setMainWord(noun.getMainWord() + 1);
-//                            }
-//                            countDependsFromWord(word, noun);
-//                        }
-//                        else {
-//                            countDependsWord(word, listOfNouns);
-//                        }
-//
-//                    }
-//                    if (listOfNouns.contains(noun)) {
-//                        updateWordInList(noun, listOfNouns);
-//                    }
-//
-//                    else {
-//                        listOfNouns.add(noun);
-//                    }
-//                }
-//                else {
-//                    for (OmoFormExt word: treeSentence.get(0).getMainOmoForms()) {
-//                        countDependsWord(word, listOfNouns);
-//                    }
-//                }
-//            }
-
-
-//            for (BearingPhraseExt word: treeSentence) {
-//                String tempWord = word.getMainOmoForms().get(0).getCurrencyOmoForm().getInitialFormString();
-//                if (GettingWordData.checkNoun(tempWord)) {
-//                    Word noun = new Word(word.getMainOmoForms().get(0).
-//                            getCurrencyOmoForm().getInitialFormString());
-//                    if (getDataAboutMain(word)) {
-//                        noun.setMainWord(1);
-//                    }
-//                    countDependsFromWord(word, noun);
-//                    countDependsWord(word, noun);
-//
-//                    if (listOfNouns.contains(noun)) {
-//                        updateWordInList(noun, listOfNouns);
-//                    }
-//
-//                    else {
-//                        noun.setIsName(GettingWordData.checkNameOfAWord(tempWord));
-//                        noun.setGender(GettingWordData.checkGenderOfAWord(tempWord));
-//                        noun.setAnimate(GettingWordData.getAnimateOfAWord(tempWord));
-//                        noun.setFrequency(getFrequency(tempWord, sentence));
-//                        noun.setIntem(InTeM.getIntem(tempWord));
-//                        listOfNouns.add(noun);
-//                    }
-//
-//                }
-//            }
         }
         for (Word word: listOfNouns) {
             word.setIsName(GettingWordData.checkNameOfAWord(word.getWord()));
             word.setGender(GettingWordData.checkGenderOfAWord(word.getWord()));
             word.setAnimate(GettingWordData.getAnimateOfAWord(word.getWord()));
             word.setFrequency(getFrequency(word.getWord(), text));
-            word.setIntem(InTeM.getIntem(word.getWord()));
         }
         return listOfNouns;
     }
@@ -333,8 +259,11 @@ public class PreprocessingOfText {
         for ( File file : dir.listFiles() ){
             if (file.isFile()) {
 
-                InTeM InTeM = createIntem(readXMLText(file.getPath()).getText());
-                for (Word word: processOfWords(readXMLText(file.getPath()).getText(), InTeM)) {
+                Text text = readXMLText(file.getPath());
+                for (Word word: processOfWords(text.getText())) {
+                    word.setAuthor(text.getAuthor());
+                    word.setTitle(text.getTitle());
+                    word.setTypeOfSpeech("NOUN");
                     createXML(count++, word);
                 }
             }
@@ -372,7 +301,6 @@ public class PreprocessingOfText {
             word.setDependentNoun(Integer.parseInt(getTagValue("dependentNoun", element)));
             word.setDependentAdjective(Integer.parseInt(getTagValue("dependentAdjective", element)));
             word.setDependenceOfNoun(Integer.parseInt(getTagValue("dependenceOfNoun", element)));
-            word.setIntem(Double.parseDouble(getTagValue("InTeM", element)));
         }
 
         return word;
@@ -403,12 +331,6 @@ public class PreprocessingOfText {
             if (GettingWordData.getInitFormOfAWord(word.toLowerCase()).equals(wordToCheck.toLowerCase())) { ++count; }
         }
         return count;
-    }
-
-
-    public boolean getDataAboutMain (BearingPhraseExt word) {
-            if (word.getMainOmoForms().isEmpty()) { return false; }
-            else { return true; }
     }
 
     // 17 - сущ. 18, 19 - прил. 20, 21 - гл.
@@ -507,39 +429,6 @@ public class PreprocessingOfText {
                 e.printStackTrace();
             }
         }
-    }
-
-    public InTeM createIntem (String text) {
-        InTeM InTeM = new InTeM();
-
-        List<String> listAllWords = GettingWordData.getListOfWords(text);
-        HashSet<String> listAllNoun = GettingWordData.getListAllNoun(text);
-
-        HashMap <String, Integer> tableOfNoun = new HashMap<>();
-        for (String noun : listAllNoun) {
-            tableOfNoun.put(noun, 0);
-        }
-
-        int id = 0;
-        for (String wordFromText : listAllWords) {
-            String word = GettingWordData.getInitFormOfAWord(wordFromText);
-
-            if (tableOfNoun.containsKey(GettingWordData.getInitFormOfAWord(word))) {
-                int count = tableOfNoun.get(GettingWordData.getInitFormOfAWord(word)) + 1;
-                tableOfNoun.remove(GettingWordData.getInitFormOfAWord(word));
-                tableOfNoun.put(word, count);
-            }
-        }
-
-        for (HashMap.Entry<String, Integer> word : tableOfNoun.entrySet()) {
-            InTeM.addWord(new WordWithStats(word.getKey(), 1, word.getValue(), getFrequency(word.getKey(), text),
-                    id++));
-        }
-        InTeM.calculateFWeight();
-        InTeM.calculateQWeight();
-        InTeM.calculateIntem();
-
-        return InTeM;
     }
 
     public void preparingTrainingSample (String path, String nameFile, int size) {

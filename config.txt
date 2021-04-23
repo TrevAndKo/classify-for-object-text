@@ -4,3 +4,4 @@ Kashtanka:classifiers/objectClassifierKashtanka.model
 JuvayaShlapa:classifiers/objectClassifierJuvayaShlapa.model
 Zaplatka:classifiers/objectClassifierJuvayaShlapa.model
 Popovna:classifiers/objectClassifierJuvayaShlapa.model
+LittlePrince:classifiers/objectClassifierJuvayaShlapa.model

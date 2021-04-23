@@ -18,7 +18,6 @@ public class Word {
     private int _dependentNoun;
     private int _dependentceOfNoun;
     private int _dependentAdjective;
-    private double _intem;
 
     Word () {
         this._word = "Не задано";
@@ -35,7 +34,6 @@ public class Word {
         this._dependentNoun = 0;
         this._dependentceOfNoun = 0;
         this._dependentAdjective = 0;
-        this._intem = 0.0;
     }
 
     Word (String word) {
@@ -60,7 +58,6 @@ public class Word {
         this._dependentNoun = dependentNoun;
         this._dependentAdjective = dependentAdjective;
         this._dependentceOfNoun = dependenceOfAdjective;
-        this._intem = intem;
     }
 
     Word (Word word) {
@@ -77,7 +74,6 @@ public class Word {
         this._dependentNoun = word._dependentNoun;
         this._dependentAdjective = word._dependentAdjective;
         this._dependentceOfNoun = word._dependentceOfNoun;
-        this._intem = word._intem;
     }
 
     public String getWord() { return _word; }
@@ -110,8 +106,6 @@ public class Word {
 
     public int getDependenceOfNoun () { return _dependentceOfNoun; }
 
-    public double getIntem () { return _intem; }
-
     public void setWord (String word) { this._word = word; }
 
     public void setIsName (int isName) { this._isName = isName; }
@@ -141,13 +135,12 @@ public class Word {
     public void setDependenceOfNoun (int dependenceOfAdjective) { this._dependentceOfNoun =
             dependenceOfAdjective; }
 
-    public void setIntem (double intem) { this._intem = intem; }
 
     public String toStringVector () {
         return (this.getIsName() + "," + this.getGender() + "," + this.getAnimate() + "," +
                 this.getFrequency() + "," + this.getMainWord() + "," + this.getDependentVerbs() +
                 "," +  this.getDependenceOfVerb() + "," + this.getDependentNoun()+ "," + this.getDependenceOfNoun()
-                + "," + this.getDependentAdjective() /*+ "," + this.getIntem()*/ + "," + this.getWord() + "\n");
+                + "," + this.getDependentAdjective() + "," + this.getWord() + "\n");
     }
 
     @Override
@@ -175,7 +168,6 @@ public class Word {
         this._dependentNoun = this._dependentNoun + word.getDependentNoun();
         this._dependentAdjective = this._dependentAdjective + word.getDependentAdjective();
         this._dependentceOfNoun = this._dependentceOfNoun + word.getDependenceOfNoun();
-        this._intem = word.getIntem();
     }
 
 }
