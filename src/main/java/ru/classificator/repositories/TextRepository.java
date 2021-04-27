@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.classificator.entities.TextEntity;
 
 @Repository
-
 public interface TextRepository extends JpaRepository <TextEntity,Integer> {
 
 }

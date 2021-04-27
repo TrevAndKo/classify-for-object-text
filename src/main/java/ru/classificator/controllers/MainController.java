@@ -52,9 +52,9 @@ public class MainController {
         TreeMap<String, Pair<String, String>> objectClass = new TreeMap<>();
         TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
 
-        HashSet <Word> ttt =  PreprocessingOfText.processOfWords(inputText);
+        HashSet <Word> listOfNouns =  PreprocessingOfText.processOfWords(inputText);
 
-        for (Word noun: ttt) {
+        for (Word noun: listOfNouns) {
             String vector = noun.toStringVector();
 
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
@@ -94,7 +94,7 @@ public class MainController {
         ArrayList<String> sortedList = new ArrayList<>();
         list.forEach((word, chara) -> {
             String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[1]) == gender && Integer.parseInt(vector[1]) == gender) {
+            if (Integer.parseInt(vector[1]) == gender && Integer.parseInt(vector[2]) == animate) {
                 sortedList.add(word);
             }
         });

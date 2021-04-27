@@ -189,12 +189,12 @@ public class PreprocessingOfText {
                     Word temp = new Word(GettingWordData.getInitFormOfAWord(checkWord));
                     countDependsFromWord(word, temp);
                     countDependsWord(word, temp);
+                    temp.setFrequency(1);
                     if (listOfNouns.contains(temp)) {
                         updateWordInList(temp, listOfNouns);
                     } else {
                         listOfNouns.add(temp);
                     }
-
             }
             else {
                 recursionProcessing(checkWord, word.getDependentWords(), listOfNouns);
@@ -204,13 +204,13 @@ public class PreprocessingOfText {
 
 
     public HashSet <Word> processOfWords (String text) {
+        long startSin = System.nanoTime();
 
         List <String> listOfSentence = GettingWordData.getListOfSentences(text);
 
         HashSet <Word> listOfNouns = new HashSet<>();
 
         for (String sentence: listOfSentence) {
-            System.out.println(sentence);
             List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
             for (String checkWord: GettingWordData.getListOfWords(sentence)) {
                 for (OmoFormExt word: treeSentence.get(0).getMainOmoForms()) {
@@ -218,9 +218,10 @@ public class PreprocessingOfText {
                             (GettingWordData.checkNoun(checkWord))) {
 
                         Word temp = new Word(GettingWordData.getInitFormOfAWord(checkWord));
-                        temp.setMainWord(temp.getMainWord() + 1);
+                        temp.setMainWord(1);
                         countDependsFromWord(word, temp);
                         countDependsWord(word, temp);
+                        temp.setFrequency(1);
                         if (listOfNouns.contains(temp)) {
                             updateWordInList(temp, listOfNouns);
                         } else {
@@ -236,12 +237,23 @@ public class PreprocessingOfText {
             }
 
         }
+
+        long finish = System.nanoTime();
+        long elapsed = finish - startSin;
+        System.out.println("Время на семантико-синтаксический анализ, сек: " + elapsed/1000000000);
+        long startMorf = System.nanoTime();
         for (Word word: listOfNouns) {
             word.setIsName(GettingWordData.checkNameOfAWord(word.getWord()));
             word.setGender(GettingWordData.checkGenderOfAWord(word.getWord()));
             word.setAnimate(GettingWordData.getAnimateOfAWord(word.getWord()));
-            word.setFrequency(getFrequency(word.getWord(), text));
+          //  word.setFrequency(getFrequency(word.getWord(), text));
         }
+        finish = System.nanoTime();
+        elapsed = finish - startMorf;
+        System.out.println("Время на морфологический анализ, сек: " + elapsed/1000000000);
+        elapsed = finish - startSin;
+        System.out.println("Время на полный анализ, сек: " + elapsed/1000000000);
+
         return listOfNouns;
     }
 

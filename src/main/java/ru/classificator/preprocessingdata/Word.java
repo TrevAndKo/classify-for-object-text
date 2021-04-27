@@ -168,6 +168,7 @@ public class Word {
         this._dependentNoun = this._dependentNoun + word.getDependentNoun();
         this._dependentAdjective = this._dependentAdjective + word.getDependentAdjective();
         this._dependentceOfNoun = this._dependentceOfNoun + word.getDependenceOfNoun();
+        this._frequency = this._frequency + word.getFrequency();
     }
 
 }
