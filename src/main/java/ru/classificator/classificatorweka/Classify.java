@@ -43,7 +43,7 @@ public class Classify {
         ArrayList dataAttribs = new ArrayList();
         Attribute classObject;
         double values[] = new double[measures.size() + 1];
-        int i = 0, maxIndex = 0;
+        int i = 0;
 
         dataClasses.add("person");
         dataClasses.add("object");
@@ -61,18 +61,11 @@ public class Classify {
         dataModel.add(new DenseInstance(1, values));
         dataModel.instance(0).setClassMissing();
 
-        //  Find the class
-        double cl[] = new double[0];
-        try {
-            cl = listModels.get(chooseClass).distributionForInstance(dataModel.instance(0));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (chooseClass.equals("EnsembleClassifier")) {
+            return classifyWithUseMoreClassify();
         }
-        for(i = 0; i < cl.length; i++)
-            if(cl[i] > cl[maxIndex])
-                maxIndex = i;
 
-        return dataModel.classAttribute().value(maxIndex);
+        return findTheClass(listModels.get(chooseClass));
     }
 
     public String classifyObject(String measures, String chooseClass) {
@@ -80,15 +73,14 @@ public class Classify {
         String [] vector = measures.split(",");
         Map<String, String> values = new HashMap<String, String>();
         values.put("isName", vector[0]);
-        values.put("gender", vector[1]);
-        values.put("animate", vector[2]);
-        values.put("frequency", vector[3]);
-        values.put("mainWord", vector[4]);
-        values.put("dependentVerbs", vector[5]);
-        values.put("dependenceOfVerb", vector[6]);
-        values.put("dependentNoun", vector[7]);
-        values.put("dependenceOfNoun", vector[8]);
-        values.put("dependentAdjective", vector[9]);
+        values.put("animate", vector[1]);
+        values.put("frequency", vector[2]);
+        values.put("mainWord", vector[3]);
+        values.put("dependentVerbs", vector[4]);
+        values.put("dependenceOfVerb", vector[5]);
+        values.put("dependentNoun", vector[6]);
+        values.put("dependenceOfNoun", vector[7]);
+        values.put("dependentAdjective", vector[8]);
 
         return classifyObject(values, chooseClass);
     }
@@ -113,4 +105,61 @@ public class Classify {
             e.printStackTrace();
         }
     }
+
+    private String classifyWithUseMoreClassify () {
+
+        ArrayList <Integer> cl = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            cl.add(i, 0);
+        }
+        ArrayList <String> classOfObject = new ArrayList<>();
+
+        for (Map.Entry <String, Classifier> model: listModels.entrySet()) {
+            if (model.getKey().contains("TheCaptain'sDaughterChapter")) {
+                classOfObject.add(findTheClass(model.getValue()));
+            }
+        }
+
+
+        for (String classOdWord: classOfObject) {
+            switch (classOdWord) {
+                case "person":
+                    cl.set(0, cl.get(0) + 1);
+                    break;
+
+                case "object":
+                    cl.set(1, cl.get(1) + 1);
+                    break;
+
+                case "something":
+                    cl.set(1, cl.get(1) + 1);
+                    break;
+            }
+        }
+
+        int maxIndex = 0;
+
+        for(int i = 0; i < cl.size(); i++)
+            if(cl.get(i)> cl.get(maxIndex))
+                maxIndex = i;
+
+        return dataModel.classAttribute().value(maxIndex);
+
+    }
+
+    private String findTheClass (Classifier model) {
+        double cl[] = new double[0];
+        int maxIndex = 0;
+        try {
+            cl = model.distributionForInstance(dataModel.instance(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for(int i = 0; i < cl.length; i++)
+            if(cl[i] > cl[maxIndex])
+                maxIndex = i;
+
+        return dataModel.classAttribute().value(maxIndex);
+    }
+
 }
