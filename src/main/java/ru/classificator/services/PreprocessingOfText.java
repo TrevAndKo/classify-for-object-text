@@ -1,7 +1,9 @@
-package ru.classificator.preprocessingdata;
+package ru.classificator.services;
 
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.*;
+import ru.classificator.entities.Text;
+import ru.classificator.entities.Word;
 import ru.textanalysis.tawt.ms.external.sp.BearingPhraseExt;
 import ru.textanalysis.tawt.ms.external.sp.OmoFormExt;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,7 +20,7 @@ import java.util.List;
 
 public class PreprocessingOfText {
 
-    protected GettingWordData GettingWordData = ru.classificator.preprocessingdata.GettingWordData.getInstance();
+    public GettingWordData GettingWordData = ru.classificator.services.GettingWordData.getInstance();
 
     private static class SingeltonPreprocessingOfText {
         private final static PreprocessingOfText instance = new PreprocessingOfText();
@@ -29,7 +31,7 @@ public class PreprocessingOfText {
     private void createXML(int numberOfFile, String word, String isName, String author, String title,
                            String typeOfSpeech, String gender, String animate, String frequency,
                            String mainWord, String dependentVerbs, String dependenceOfVerb, String dependentNoun,
-                           String dependentAdjective, String dependenceOfNoun, String intem) {
+                           String dependentAdjective, String dependenceOfNoun) {
 
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -134,7 +136,7 @@ public class PreprocessingOfText {
 
     public Text readXMLText (String path) {
 
-        Text text = new Text ();
+        Text text = new Text();
 
         File xmlFile = new File(path);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -315,7 +317,7 @@ public class PreprocessingOfText {
     }
 
     private Text getText(Node node) {
-        Text text = new Text ();
+        Text text = new Text();
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element element = (Element) node;
             text.setAuthor(getTagValue("author", element));
@@ -368,16 +370,7 @@ public class PreprocessingOfText {
         return node.getNodeValue();
     }
 
-    public int getFrequency (String wordToCheck, String sentence) {
-        int count = 0;
-        for (String word: GettingWordData.getListOfWords(sentence)) {
-            if (GettingWordData.getInitFormOfAWord(word.toLowerCase()).equals(wordToCheck.toLowerCase())) { ++count; }
-        }
-        return count;
-    }
-
     // 17 - сущ. 18, 19 - прил. 20, 21 - гл.
-
 
     public void countDependsFromWord(OmoFormExt word, Word noun) {
 

@@ -4,7 +4,7 @@ Kashtanka:classifiers/objectClassifierKashtanka.model
 JuvayaShlapa:classifiers/objectClassifierJuvayaShlapa.model
 Zaplatka:classifiers/objectClassifierJuvayaShlapa.model
 Popovna:classifiers/objectClassifierJuvayaShlapa.model
-LittlePrince:classifiers/objectClassifierJuvayaShlapa.model
+TheLittlePrince:classifiers/objectClassifierJuvayaShlapa.model
 TheCaptain'sDaughter:classifiers/objectTheCaptain'sDaughterFullText.model
 TheCaptain'sDaughterChapter1:classifiers/objectTheCaptain'sDaughterChapter1.model
 TheCaptain'sDaughterChapter2:classifiers/objectTheCaptain'sDaughterChapter2.model

@@ -21,15 +21,22 @@
 
 <div class = "container mt-5">
     <h3>Список текстов</h3>
+    <form action="/texts/byAuthor" method="post">
+
+        <select name="author">
+            <option th:each="author : ${listAuthor}"
+                    th:utext="${author}"/>
+        </select>
+
+        <button type="submit">Выбрать автора для фильтрации</button>
+    </form>
     <table>
         <tr>
-            <th> <a href="/texts">Номер произведения</a></th>
             <th> <a href="/texts/title">Название произведения</a></th>
             <th> <a href="/texts/author">Автор</a></th>
             <th>Посмотреть полный текст</th>
         </tr>
         <tr th:each="text : ${texts}">
-            <td th:text="${text.getId()}"></td>
             <td th:text="${text.getTextTitle()}"></td>
             <td th:text="${text.getTextAuthor()}"></td>
             <td><a th:href="'/texts/' + ${text.getId()}" class="btn btn-warning">Посмотреть полный текст</a></td>

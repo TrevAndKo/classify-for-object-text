@@ -5,7 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <style>
+        div.block{
+            display:inline-block;
+            padding-top: 0px;
+        }
         table th {padding: 5px;}
+        div {vertical-align: top;}
     </style>
 </head>
 <body>
@@ -22,58 +27,94 @@
 </div>
 
 <div class = "container mt-5">
-    <h3>Список существительных и их классов</h3>
+    <h3>Список существительных, классифицированных по модели <th:block th:text="${modelChoose}"></th:block></h3>
 
     <h5>Класс: "Person"</h5>
     <h6>Сортировка по полу</h6>
-    <ul>
-        <h7>Мужской</h7>
-        <th:block th:each=" noun : ${listPersonMale}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <ul>
-        <h7>Женский</h7>
-        <th:block th:each=" noun : ${listPersonFemale}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
 
-    <ul>
-        <h7>Средний</h7>
-        <th:block th:each=" noun : ${listPersonNon}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
+    <div>
+        <div class="block">
+            <ul>
+                <h7>Мужской</h7>
+                <th:block th:each=" noun : ${listPersonMale}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+
+        </div>
+
+        <div class="block">
+
+            <ul>
+                <h7>Женский</h7>
+                <th:block th:each=" noun : ${listPersonFemale}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+
+        </div>
+
+        <div class="block">
+            <ul>
+                <h7>Средний</h7>
+                <th:block th:each=" noun : ${listPersonNon}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+
+        </div>
+    </div>
+
 
     <h5>Класс: "Object"</h5>
     <h6>Сортировка по полу</h6>
-    <ul>
-        <h7>Мужской</h7>
-        <th:block th:each=" noun : ${listObjectMale}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <ul>
-        <h7>Женский</h7>
-        <th:block th:each=" noun : ${listObjectFemale}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
-    <ul>
-        <h7>Средний</h7>
-        <th:block th:each=" noun : ${listObjectNon}">
-            <li th:utext="${noun}"></li>
-        </th:block>
-    </ul>
+
+    <div>
+        <div class="block">
+            <div class="text">
+
+            </div>
+            <ul>
+                <h7>Мужской</h7>
+                <th:block th:each=" noun : ${listObjectMale}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="text">
+
+            </div>
+            <ul>
+                <h7>Женский</h7>
+                <th:block th:each=" noun : ${listObjectFemale}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="text">
+
+            </div>
+            <ul>
+                <h7>Средний</h7>
+                <th:block th:each=" noun : ${listObjectNon}">
+                    <li th:utext="${noun}"></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
 
 
-    <h5>Класс: "Something"</h5>
-    <ul>
-        <th:block th:each=" noun : ${listSomething}">
-            <li th:utext="${noun.getKey()}"></li>
-        </th:block>
-    </ul>
+
+    <!--<h5>Класс: "Something"</h5>-->
+    <!--<ol>-->
+        <!--<th:block th:each=" noun : ${listSomething}">-->
+            <!--<li th:utext="${noun.getKey()}"></li>-->
+        <!--</th:block>-->
+    <!--</ol>-->
 
     <div>
         <footer class="text-muted py-5">

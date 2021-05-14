@@ -19,14 +19,16 @@
     </div>
 </div>
 
-<div class = "container mt-5 mb-5">
+<div class = "container mt-4 mb-4">
     <h3>Классификатор объектов из текстов</h3>
-    <h5>К сожалению, на обработку текстов большого размера может потребоваться время. Просим прощения за ожидание.</h5>
+    <br>
 
     <form action="/" method="post" href = "/">
-        <textarea name="inputText" placeholder="Введите текст для классификации" class="form-control" rows="15"></textarea><br>
+        <textarea name="inputText" placeholder="Введите текст для классификации.
+Время обработки одной страницы текста в среднем занимает 10 секунд. " class="form-control" rows="15"></textarea><br>
 
         <select name="modelChoose">
+            <option>Выберите модель</option>
             <option th:each="modelChoose : ${models}"
                     th:utext="${modelChoose}"/>
         </select>

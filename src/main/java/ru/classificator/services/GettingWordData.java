@@ -1,4 +1,4 @@
-package ru.classificator.preprocessingdata;
+package ru.classificator.services;
 
 import ru.textanalysis.tawt.jmorfsdk.JMorfSdk;
 import ru.textanalysis.tawt.jmorfsdk.loader.JMorfSdkFactory;
@@ -57,7 +57,7 @@ public class GettingWordData {
 
     public String toLowerSentence (String text) { return text.toLowerCase(); } // Приводит текст к нижнему регистру
 
-    public boolean checkNoun(String word){ // Проверяет, является ли слово существительным
+    public boolean checkNoun(String word) { // Проверяет, является ли слово существительным
         List<Byte> temp = jMorfSdk.getTypeOfSpeeches(word);
         if ((jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("17")))&&
                 (!jMorfSdk.getTypeOfSpeeches(word).contains(Byte.parseByte("12")))&&

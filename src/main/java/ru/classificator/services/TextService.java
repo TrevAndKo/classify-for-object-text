@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import ru.classificator.entities.TextEntity;
-import ru.classificator.preprocessingdata.Text;
+import ru.classificator.entities.Text;
 import ru.classificator.repositories.TextRepository;
 
 import java.io.File;
@@ -24,8 +24,8 @@ public class TextService {
 
     private final TextRepository textRepository;
 
-    protected final ru.classificator.preprocessingdata.PreprocessingOfText PreprocessingOfText =
-            ru.classificator.preprocessingdata.PreprocessingOfText.getInstance();
+    protected final ru.classificator.services.PreprocessingOfText PreprocessingOfText =
+            ru.classificator.services.PreprocessingOfText.getInstance();
 
     public void setTextEntity(TextEntity textEntity, String path) {
         Text text = PreprocessingOfText.readXMLText(path);
@@ -45,8 +45,7 @@ public class TextService {
                 System.out.println("Работа с файлом " + file.getPath() + " завершена.");
             }
         }
-        System.out.println("Загрузка данных завершена. Сервер готов к работе. Запустите клиент по адресу: localhost: " +
-                environment.getProperty("local.server.port"));
+        System.out.println("Загрузка данных завершена. Сервер готов к работе.");
     }
 
     public void save(TextEntity textEntity) {
@@ -61,7 +60,11 @@ public class TextService {
         ArrayList<TextEntity> listTexts = (ArrayList<TextEntity>) getAll();
         ArrayList<String> listTitle = new ArrayList<>();
         for (TextEntity text: listTexts) {
-            listTitle.add(text.getTextTitle());
+            if (text.getModel().contains("TheCaptain'sDaughterChapter")) {
+                continue;
+            } else {
+                listTitle.add(text.getTextTitle());
+            }
         }
         return listTitle;
     }

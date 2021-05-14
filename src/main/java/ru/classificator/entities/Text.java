@@ -1,4 +1,4 @@
-package ru.classificator.preprocessingdata;
+package ru.classificator.entities;
 
 public class Text {
     private String _author;
@@ -6,21 +6,21 @@ public class Text {
     private String _text;
     private String _model;
 
-    Text () {
+    public Text () {
         this._author = "Не задан";
         this._title = "Не задано";
         this._text = "Не задано";
         this._model = "Не задано";
     }
 
-    Text (String author, String title, String text, String model) {
+    public Text (String author, String title, String text, String model) {
         this._author = author;
         this._title = title;
         this._text = text;
         this._model = model;
     }
 
-    Text (Text text) {
+    public Text (Text text) {
         this._author = text._author;
         this._title = text._title;
         this._text = text._text;

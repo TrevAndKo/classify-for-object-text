@@ -73,14 +73,14 @@ public class Classify {
         String [] vector = measures.split(",");
         Map<String, String> values = new HashMap<String, String>();
         values.put("isName", vector[0]);
-        values.put("animate", vector[1]);
-        values.put("frequency", vector[2]);
-        values.put("mainWord", vector[3]);
-        values.put("dependentVerbs", vector[4]);
-        values.put("dependenceOfVerb", vector[5]);
-        values.put("dependentNoun", vector[6]);
-        values.put("dependenceOfNoun", vector[7]);
-        values.put("dependentAdjective", vector[8]);
+        values.put("animate", vector[2]);
+        values.put("frequency", vector[3]);
+        values.put("mainWord", vector[4]);
+        values.put("dependentVerbs", vector[5]);
+        values.put("dependenceOfVerb", vector[6]);
+        values.put("dependentNoun", vector[7]);
+        values.put("dependenceOfNoun", vector[8]);
+        values.put("dependentAdjective", vector[9]);
 
         return classifyObject(values, chooseClass);
     }

@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.classificator.classificatorweka.Classify;
-import ru.classificator.preprocessingdata.GettingWordData;
-import ru.classificator.preprocessingdata.PreprocessingOfText;
-import ru.classificator.preprocessingdata.Word;
+import ru.classificator.services.PreprocessingOfText;
+import ru.classificator.entities.Word;
 import ru.classificator.services.TextService;
 
 import java.util.ArrayList;
@@ -26,15 +25,15 @@ public class MainController {
     @Autowired
     private TextService textService;
 
-    private GettingWordData GettingWordData = ru.classificator.preprocessingdata.GettingWordData.getInstance();
     private PreprocessingOfText PreprocessingOfText
-            = ru.classificator.preprocessingdata.PreprocessingOfText.getInstance();
+            = ru.classificator.services.PreprocessingOfText.getInstance();
     private Classify ClassifyWord = new Classify();
 
     @GetMapping("/")
     public String greeting(Model model) {
 
         model.addAttribute("title", "Главная страница");
+
         model.addAttribute("models", textService.getTitle());
         return "home";
     }
@@ -44,6 +43,10 @@ public class MainController {
 
         if (inputText.isEmpty()) {
             return "error-input-text";
+        }
+
+        if (modelChoose.equals("Выберите модель")) {
+            modelChoose = "Гимназистки. Лидианка";
         }
 
         System.out.println("Старт обработки запроса.");
@@ -84,8 +87,9 @@ public class MainController {
         model.addAttribute("listObjectFemale", filterNoun(-1, 0, objectClass));
         model.addAttribute("listObjectNon", filterNoun(0, 0, objectClass));
 
-        model.addAttribute("listSomething", somethingClass);
+    //    model.addAttribute("listSomething", somethingClass);
 
+        model.addAttribute("modelChoose", modelChoose);
         return "result";
     }
 

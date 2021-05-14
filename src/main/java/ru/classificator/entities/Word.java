@@ -1,4 +1,4 @@
-package ru.classificator.preprocessingdata;
+package ru.classificator.entities;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ public class Word {
     private int _dependentceOfNoun;
     private int _dependentAdjective;
 
-    Word () {
+    public Word () {
         this._word = "Не задано";
         this._isName = 0;
         this._author = "Не задано";
@@ -36,14 +36,14 @@ public class Word {
         this._dependentAdjective = 0;
     }
 
-    Word (String word) {
+    public Word (String word) {
         super();
         this._word = word;
     }
 
-    Word (String word, int isName, String author, String title, int gender, int animate,
+    public Word (String word, int isName, String author, String title, int gender, int animate,
           int frequency, int mainWord, int dependentVerbs, int dependenceOfVerb,
-          int dependentNoun, int dependentAdjective, int dependenceOfAdjective, double intem) {
+          int dependentNoun, int dependentAdjective, int dependenceOfAdjective) {
         this._word = word;
         this._isName = isName;
         this._author = author;
@@ -60,7 +60,7 @@ public class Word {
         this._dependentceOfNoun = dependenceOfAdjective;
     }
 
-    Word (Word word) {
+    public Word (Word word) {
         this._word = word._word;
         this._isName = word._isName;
         this._author = word._author;
