@@ -1,5 +1,4 @@
 package ru.classificator.controllers;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
@@ -51,28 +50,29 @@ public class MainController {
 
         System.out.println("Старт обработки запроса.");
 
-        TreeMap<String, Pair<String, String>> personClass = new TreeMap<>();
-        TreeMap<String, Pair<String, String>> objectClass = new TreeMap<>();
-        TreeMap<String, Pair<String, String>> somethingClass = new TreeMap<>();
+        TreeMap<String, String> personClass = new TreeMap<>();
+        TreeMap<String, String> objectClass = new TreeMap<>();
+        TreeMap<String, String> somethingClass = new TreeMap<>();
 
         HashSet <Word> listOfNouns =  PreprocessingOfText.processOfWords(inputText);
 
         for (Word noun: listOfNouns) {
             String vector = noun.toStringVector();
+            String [] word = vector.split(",");
 
             String classOfNoun = ClassifyWord.classifyObject(vector, textService.getModel(modelChoose));
 
                 switch (classOfNoun) {
                     case "person":
-                        personClass.put(noun.getWord(), new Pair (classOfNoun, vector));
+                        personClass.put(vector, classOfNoun);
                         break;
 
                     case "object":
-                        objectClass.put(noun.getWord(), new Pair (classOfNoun, vector));
+                        objectClass.put(vector, classOfNoun);
                         break;
 
                     case "something":
-                        somethingClass.put(noun.getWord(), new Pair (classOfNoun, vector));
+                        somethingClass.put(vector, classOfNoun);
                         break;
                 }
 
@@ -94,12 +94,13 @@ public class MainController {
     }
 
 
-    public ArrayList<String> filterNoun(int gender, int animate, TreeMap<String, Pair<String, String>> list) {
+    public ArrayList<String> filterNoun(int gender, int animate, TreeMap<String, String> list) {
         ArrayList<String> sortedList = new ArrayList<>();
-        list.forEach((word, chara) -> {
-            String[] vector = chara.getValue().split(",");
-            if (Integer.parseInt(vector[1]) == gender && Integer.parseInt(vector[2]) == animate) {
-                sortedList.add(word);
+        list.forEach((vector, classOfNoun) -> {
+            String [] vectorSplit = vector.split(",");
+
+            if (Integer.parseInt(vectorSplit[1]) == gender && Integer.parseInt(vectorSplit[2]) == animate) {
+                sortedList.add(vectorSplit[vectorSplit.length - 1]);
             }
         });
         return sortedList;
