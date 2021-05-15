@@ -355,10 +355,8 @@ public class PreprocessingOfText {
 
         NodeList nodeList = element.getElementsByTagName(tag).item(0).getChildNodes();
 
-        Node node;
-
         for(int index = 0; index < nodeList.getLength(); index++){
-            if(nodeList.item(index) instanceof CharacterData){
+            if (nodeList.item(index) instanceof CharacterData){
                 CharacterData child  = (CharacterData) nodeList.item(index);
                 String data = child.getData();
 
@@ -366,7 +364,7 @@ public class PreprocessingOfText {
                     return child.getData();
             }
         }
-        node = (Node) nodeList.item(0);
+        Node node = (Node) nodeList.item(0);
         return node.getNodeValue();
     }
 

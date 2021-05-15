@@ -24,8 +24,7 @@
     <div th:each="el : ${text}" class="alert alert-info mt-2">
         <h3 th:text="${el.getTextTitle()}"/>
         <p th:text="${el.getTextAuthor()}"/>
-        <div th:text="${el.getText()}"/>
-
+        <pre th:text="${el.getText()}"/>
     </div>
 
     <div>
