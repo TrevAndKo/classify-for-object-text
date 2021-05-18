@@ -24,7 +24,7 @@ public class TextsController {
     @GetMapping("/texts")
     public String textMain (Model model) {
 
-        model.addAttribute("texts", listTexts(textRepository.findAll()));
+        model.addAttribute("texts", textService.listTexts(textRepository.findAll()));
         model.addAttribute("listAuthor", textService.getListAuthor());
 
         return "text-main";
@@ -48,7 +48,7 @@ public class TextsController {
     @GetMapping("/texts/title")
     public String textSortedByTitle (Model model) {
 
-        ArrayList<TextEntity> sortedList = (ArrayList<TextEntity>) textRepository.findAll();
+        List<TextEntity> sortedList = (ArrayList <TextEntity>) textService.listTexts(textRepository.findAll());
 
                 Collections.sort(sortedList, new Comparator<TextEntity>() {
                 @Override
@@ -57,7 +57,7 @@ public class TextsController {
                 }
             });
 
-        model.addAttribute("texts", listTexts(sortedList));
+        model.addAttribute("texts", textService.listTexts(sortedList));
         model.addAttribute("listAuthor", textService.getListAuthor());
 
         return "sort-by-title";
@@ -76,7 +76,7 @@ public class TextsController {
         });
 
         Iterable <TextEntity> texts = sortedList;
-        model.addAttribute("texts", listTexts(sortedList));
+        model.addAttribute("texts", textService.listTexts(sortedList));
         model.addAttribute("listAuthor", textService.getListAuthor());
 
         return "sort-by-author";
@@ -86,20 +86,12 @@ public class TextsController {
     public String textFilterByAuthor (String author, Model model) {
 
         ArrayList<TextEntity> sortedList = (ArrayList<TextEntity>) textService.getAuthor(author);
-        model.addAttribute("texts", listTexts(sortedList));
+        model.addAttribute("texts", textService.listTexts(sortedList));
         model.addAttribute("listAuthor", textService.getListAuthor());
 
         return "text-sorted-author";
     }
 
-    public Iterable <TextEntity> listTexts (Iterable <TextEntity> sourceListText) {
-        Iterable <TextEntity> texts = textRepository.findAll();
-        for (TextEntity text: textRepository.findAll()) {
-            if (text.getModel().contains("TheCaptain'sDaughterChapter")) {
-                ((List<TextEntity>) texts).remove(text);
-            }
-        }
-        return texts;
-    }
+
 
 }

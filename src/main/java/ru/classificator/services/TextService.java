@@ -98,4 +98,14 @@ public class TextService {
         return listByAuthor;
     }
 
+    public Iterable <TextEntity> listTexts (Iterable <TextEntity> sourceListText) {
+        Iterable <TextEntity> texts = sourceListText;
+        for (TextEntity text: textRepository.findAll()) {
+            if (text.getModel().contains("TheCaptain'sDaughterChapter")) {
+                ((List<TextEntity>) texts).remove(text);
+            }
+        }
+        return texts;
+    }
+
 }
