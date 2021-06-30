@@ -182,14 +182,27 @@ public class PreprocessingOfText {
         }
     }
 
-
-    public void recursionProcessing (String checkWord, List <OmoFormExt> listDataAboutPoint, HashSet <Word> listOfNouns, String flag) {
+    /**
+     * Рекурсивный метод для прохода по всем зависимым словам в предложении.
+     * @param checkWord - проверяемое слово
+     * @param listDataAboutPoint - список зависимых слов от рассматриваемого главного
+     * @param listOfNouns - список слов существительных из рассматриваемого текста
+     * @param flag - флаг для пропуска повторяющихся слов из семантического дерева
+     */
+    public void recursionProcessing (String checkWord, List <OmoFormExt> listDataAboutPoint, HashSet <Word> listOfNouns,
+                                     String flag) {
+        // В цикле выполняется проход по всем зависимым словам от рассмотренного главного
         for (OmoFormExt word: listDataAboutPoint) {
             if (flag.equals(word.getCurrencyOmoForm().getInitialFormString())) {
                 continue;
             } else {
-                if (GettingWordData.getInitFormOfAWord(checkWord).equals(word.getCurrencyOmoForm().getInitialFormString()) && (
-                        GettingWordData.checkNoun(checkWord))) {
+                /**
+                 * Если проверяемое слово соответствует слову из списка зависимых, выполняется формирование элемента
+                 * типа Word. Если данное слово присутствует в списке существительных, выполняется обновление данных.
+                 * В ином случае список существительных дополняется новым словом.
+                 */
+                if (GettingWordData.getInitFormOfAWord(checkWord).equals(word.getCurrencyOmoForm()
+                        .getInitialFormString()) && (GettingWordData.checkNoun(checkWord))) {
                     Word temp = new Word(GettingWordData.getInitFormOfAWord(checkWord));
                     countDependsFromWord(word, temp);
                     countDependsWord(word, temp);
@@ -202,44 +215,61 @@ public class PreprocessingOfText {
                     flag = temp.getWord();
                     break;
                 }
+                /**
+                 * Пока список зависимых слов не будет пустым, будет выполняться вызов рекурсивного метода обработки
+                 * списка зависимых слов.
+                 */
                 else {
                     recursionProcessing(checkWord, word.getDependentWords(), listOfNouns, flag);
                 }
             }
-
-
         }
     }
 
-
+    /**
+     * Метод обработки текста для получения списка слов с характеристиками (Word).
+     * @param text - передаваемый текст для обработки
+     */
     public HashSet <Word> processOfWords (String text) {
-        long startSin = System.nanoTime();
 
         List <String> listOfSentence = GettingWordData.getListOfSentences(text);
+        HashSet <Word> listOfNouns = new HashSet<>(); // Список слов существительных из текста
 
-        HashSet <Word> listOfNouns = new HashSet<>();
-
+        // В цикле выполняется проход по каждому предложению из исходного текста
         for (String sentence: listOfSentence) {
+            // Выполняется построение дерева предложения для получения синтаксических данных
             List<BearingPhraseExt> treeSentence = GettingWordData.sp.getTreeSentenceWithoutAmbiguity(sentence);
+            // В цикле выполняется проход по каждому слову в предложении
             for (String checkWord: GettingWordData.getListOfWords(sentence)) {
+                // Введён параметр flag для пропуска повторяющихся слов из дерева предложений
                 String flag = "";
                 try {
+                    // В цикле выполняется проход по главным словам в каждом предложении
                     for (BearingPhraseExt mainWord: treeSentence) {
                         if (flag.equals(mainWord.getMainOmoForms().get(0)
                                 .getCurrencyOmoForm().getInitialFormString())) {
                             continue;
                         } else {
+                            // Выполняется проверка, что главное слово эквивалентно проверяемому слову
                             if (GettingWordData.getInitFormOfAWord(checkWord).equals(mainWord.getMainOmoForms().get(0)
                                     .getCurrencyOmoForm().getInitialFormString()) &&
                                     (GettingWordData.checkNoun(checkWord))) {
-
+                                // Выполняется формирование элемента Word для слова
                                 Word temp = new Word(GettingWordData.getInitFormOfAWord(checkWord));
-                                temp.setMainWord(1);
+                                temp.setMainWord(1); // Устанавливается значение главного слова
+
+                                // Выполняется расчёт зависимых слов и их установка
                                 for (OmoFormExt word: mainWord.getMainOmoForms()) {
                                     countDependsFromWord(word, temp);
                                     countDependsWord(word, temp);
                                 }
-                                temp.setFrequency(1);
+                                temp.setFrequency(1); // Выполняется установка стартового значения частоты
+
+                                /**
+                                 * Выполняется проверка, присутствует ли проверяемое слово в списке существительных.
+                                 * Если слово есть в списке, то данное слово обновляется в списке полученными данными,
+                                 * иначе проверяемое слово добавляется в список.
+                                 */
                                 if (listOfNouns.contains(temp)) {
                                     updateWordInList(temp, listOfNouns);
                                 } else {
@@ -248,6 +278,10 @@ public class PreprocessingOfText {
 
                                 flag = checkWord;
                             }
+                            /**
+                             * Если проверяемое слово не эквивалентно главному слову, то в цикле выполняется проход по
+                             * всем зависмым словам от главного слова
+                             */
                             else {
                                 for (OmoFormExt word: mainWord.getMainOmoForms()) {
                                     recursionProcessing(checkWord, word.getDependentWords(), listOfNouns, flag);
@@ -265,21 +299,11 @@ public class PreprocessingOfText {
 
         }
 
-        long finish = System.nanoTime();
-        long elapsed = finish - startSin;
-        System.out.println("Время на семантико-синтаксический анализ, сек: " + elapsed/1000000000);
-        long startMorf = System.nanoTime();
         for (Word word: listOfNouns) {
             word.setIsName(GettingWordData.checkNameOfAWord(word.getWord()));
             word.setGender(GettingWordData.checkGenderOfAWord(word.getWord()));
             word.setAnimate(GettingWordData.getAnimateOfAWord(word.getWord()));
-          //  word.setFrequency(getFrequency(word.getWord(), text));
         }
-        finish = System.nanoTime();
-        elapsed = finish - startMorf;
-        System.out.println("Время на морфологический анализ, сек: " + elapsed/1000000000);
-        elapsed = finish - startSin;
-        System.out.println("Время на полный анализ, сек: " + elapsed/1000000000);
 
         return listOfNouns;
     }
